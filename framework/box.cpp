@@ -8,7 +8,7 @@ Box::Box():
     
 Box::Box(glm::vec3 const& min, glm::vec3 const& max):
 	minimum_{min},
-	maximum_{max} {}  
+	maximum_{max} {}    
 
 Box::Box( Box const& box ):
 	minimum_{box.minimum_},

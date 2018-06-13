@@ -4,7 +4,7 @@
 #include <cmath>
 #include <iostream>    
 #include "color.hpp"
-using namespace std;
+using namespace std;  
   
 class Shape{
 public:

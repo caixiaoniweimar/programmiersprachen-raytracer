@@ -7,7 +7,7 @@
 class Box : public Shape{
 public:  
 // Aufgabe 5.2       
-	Box();   
+	Box();     
 	Box(glm::vec3 const& min, glm::vec3 const& max);
 	Box( Box const& box );
 	~Box() override;
