@@ -1,6 +1,6 @@
 #include "sphere.hpp"
 #include <glm/vec3.hpp>
-
+  
 // Aufgabe 5.2
 	Sphere::Sphere():  
 		mittelpunkt_{0.0f,0.0f,0.0f},

@@ -5,10 +5,10 @@
 Box::Box():
 	minimum_{0.0f,0.0f,0.0f},
 	maximum_{1.0f,1.0f,1.1f}{}
-  
+    
 Box::Box(glm::vec3 const& min, glm::vec3 const& max):
 	minimum_{min},
-	maximum_{max} {}
+	maximum_{max} {}  
 
 Box::Box( Box const& box ):
 	minimum_{box.minimum_},
