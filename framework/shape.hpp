@@ -5,7 +5,7 @@
 #include <iostream>
 #include "color.hpp"
 using namespace std;
-
+  
 class Shape{
 public:
 	// zwei Methoden

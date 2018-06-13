@@ -5,7 +5,7 @@
 //Minimum und Maximum vec3
 // Konstruktoren; get-Methoden; Methoden area und volume
 class Box : public Shape{
-public:
+public:  
 // Aufgabe 5.2
 	Box();
 	Box(glm::vec3 const& min, glm::vec3 const& max);

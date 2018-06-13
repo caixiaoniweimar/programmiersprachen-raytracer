@@ -14,7 +14,7 @@ Box::Box( Box const& box ):
 	minimum_{box.minimum_},
 	maximum_{box.maximum_} {}
 
-Box::~Box() {}
+Box::~Box() {}   
 	
 	double Box::area() const{
 		double length= maximum_.x - minimum_.x;

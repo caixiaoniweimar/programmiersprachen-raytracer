@@ -2,7 +2,7 @@
 #include <glm/vec3.hpp>
 
 // Aufgabe 5.2
-	Sphere::Sphere():
+	Sphere::Sphere():  
 		mittelpunkt_{0.0f,0.0f,0.0f},
 		radius_{1.0} {}
 
