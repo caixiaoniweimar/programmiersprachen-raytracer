@@ -8,7 +8,7 @@ using namespace std;
   
 class Shape{
 public:
-	// zwei Methoden
+	// zwei Methoden   
 		Shape();
 		Shape(string name, Color const& color);
 		Shape(Shape const& shape);

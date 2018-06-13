@@ -6,7 +6,7 @@
 // Konstruktoren; get-Methoden; Methoden area und volume
 class Box : public Shape{
 public:  
-// Aufgabe 5.2     
+// Aufgabe 5.2       
 	Box();
 	Box(glm::vec3 const& min, glm::vec3 const& max);
 	Box( Box const& box );

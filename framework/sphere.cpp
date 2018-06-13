@@ -9,7 +9,7 @@
 	Sphere::Sphere(Sphere const& s):// copy Konstruktor
 		mittelpunkt_{s.mittelpunkt_},
 		radius_{s.radius_} {}
-      
+         
 	Sphere::Sphere(glm::vec3 const& mittelpunkt, double radius):
 		mittelpunkt_{mittelpunkt},
 		radius_{radius} {}
