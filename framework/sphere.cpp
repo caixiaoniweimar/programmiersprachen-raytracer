@@ -6,9 +6,9 @@
 		mittelpunkt_{0.0f,0.0f,0.0f},
 		radius_{1.0} {}
 
-	//Sphere::Sphere(Sphere const& s):// copy Konstruktor
-	//	mittelpunkt_{s.mittelpunkt_},
-	//	radius_{s.radius_} {}
+	Sphere::Sphere(Sphere const& s):// copy Konstruktor
+		mittelpunkt_{s.mittelpunkt_},
+		radius_{s.radius_} {}
 
 	Sphere::Sphere(glm::vec3 const& mittelpunkt, double radius):
 		mittelpunkt_{mittelpunkt},
@@ -32,4 +32,11 @@
 		return radius_;
 	}
 
+// Aufgabe 5.5
+	ostream& Sphere::print(ostream& os) const {
+		Shape::print(os);
+		os<<"Mittelpunkt: "<<"( "<<mittelpunkt_.x<<","<<mittelpunkt_.y<<","<<mittelpunkt_.z
+		  <<" )"<<"Radius: "<<radius_;
+		return os;
+	}
 	

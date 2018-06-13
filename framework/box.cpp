@@ -10,6 +10,10 @@ Box::Box(glm::vec3 const& min, glm::vec3 const& max):
 	minimum_{min},
 	maximum_{max} {}
 
+Box::Box( Box const& box ):
+	minimum_{box.minimum_},
+	maximum_{box.maximum_} {}
+
 Box::~Box() {}
 	
 	double Box::area() const{
@@ -33,3 +37,17 @@ Box::~Box() {}
 	glm::vec3 Box::get_max() const{
 		return maximum_;
 	}
+
+// Aufgabe 5.5
+	ostream& Box::print(ostream& os) const{
+		Shape::print(os);
+		os<<" Maximum: "<<"( "<< maximum_.x<<","<<maximum_.y<<","<<maximum_.z<<" )"
+		<<" Minimum: "<<"( "<<minimum_.x<<","<<minimum_.y<<","<<minimum_.z<<" )";
+		return os;
+	}
+
+
+
+
+
+

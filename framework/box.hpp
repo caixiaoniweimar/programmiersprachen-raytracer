@@ -9,6 +9,7 @@ public:
 // Aufgabe 5.2
 	Box();
 	Box(glm::vec3 const& min, glm::vec3 const& max);
+	Box( Box const& box );
 	~Box() override;
 
 	double area() const override;
@@ -16,6 +17,9 @@ public:
 
 	glm::vec3 get_min() const;
 	glm::vec3 get_max() const;
+
+// Aufgabe 5.5
+	ostream& print(ostream& os) const override;
 
 private:
 	glm::vec3 minimum_;
