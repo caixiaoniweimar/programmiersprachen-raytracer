@@ -16,7 +16,7 @@ Box::Box( Box const& box ):
 
 Box::~Box() {}   
 	
-	double Box::area() const{
+	double Box::area() const{     
 		double length= maximum_.x - minimum_.x;
 		double height= maximum_.y - minimum_.y;
 		double width= maximum_.z - minimum_.z;

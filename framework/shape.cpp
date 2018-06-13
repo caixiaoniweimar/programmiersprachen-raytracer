@@ -6,7 +6,7 @@ Shape::Shape():
 
 Shape::Shape(string name, Color const& color):
 	name_{name},
-	color_{color} {}
+	color_{color} {}   
   
 Shape::Shape(Shape const& shape):
 	name_{shape.name_},
