@@ -1,7 +1,7 @@
 #include "shape.hpp"
 
 Shape::Shape():
-	name_{"default name"},  
+	name_{"default name"},    
 	color_{0.0f,0.0f,0.0f} {}
 
 Shape::Shape(string name, Color const& color):
