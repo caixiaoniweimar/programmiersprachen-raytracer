@@ -8,20 +8,23 @@ using namespace std;
   
 class Shape{
 public:
-	// zwei Methoden   
+// Aufgabe 5.3
 		Shape();
-		Shape(string name, Color const& color);
-		Shape(Shape const& shape);
+		Shape(string const& name, Color const& color);
 		virtual ~Shape();
+	    //~Shape();
+		// Destruktoren legt man nur an wenn sie Sekundärressourcen freigeben muessen 
 
-		virtual double area() const=0; 
-		virtual double volume() const=0;
+// Aufgabe 5.1
+		virtual double area() const=0;  // 在 .hpp 写virtual; 在 .cpp 不需要写
+		virtual double volume() const=0; // Wir koennen kein statisches/dynamsiches Objekt von Shape anlegen
+										// sondern nur ein Pointer/Referenz
 
 // Aufgabe 5.4
 		virtual ostream& print(ostream& os) const;
 
 // Aufgabe 5.3
-protected:
+protected: // abgleiteted Klasse wird diese Attribute aufrufen( vererben diese Attribute als private )
 		string name_;
 		Color color_;
 	

@@ -3,16 +3,20 @@
 
 // Aufgabe 5.2
 Box::Box():
+	Shape(),
 	minimum_{0.0f,0.0f,0.0f},
-	maximum_{1.0f,1.0f,1.1f}{}
+	maximum_{1.0f,1.0f,1.0f}{}
     
 Box::Box(glm::vec3 const& min, glm::vec3 const& max):
+	Shape(),
 	minimum_{min},
 	maximum_{max} {}      
 
-Box::Box( Box const& box ):
-	minimum_{box.minimum_},
-	maximum_{box.maximum_} {}
+// Aufgabe 5.3
+Box::Box(string const& name, Color const& color, glm::vec3 const& min, glm::vec3 const& max ):
+	Shape(name,color), // !!wichtig!!
+	minimum_{min},
+	maximum_{max} {}   
 
 Box::~Box() {}   
 	

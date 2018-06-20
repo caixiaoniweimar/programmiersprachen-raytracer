@@ -1,18 +1,21 @@
 #include "shape.hpp"
 
+// Aufgabe 5.3
 Shape::Shape():
 	name_{"default name"},    
-	color_{0.0f,0.0f,0.0f} {}
+	color_{0.0f,0.0f,0.0f} {
+	//std::cout << "Hier benutze ich den Konstruktor von Shape!\n";
+	}
 
-Shape::Shape(string name, Color const& color):
+Shape::Shape(string const& name, Color const& color):
 	name_{name},
-	color_{color} {}      
-  
-Shape::Shape(Shape const& shape):
-	name_{shape.name_},
-	color_{shape.color_} {}
-
-Shape::~Shape() {}
+	color_{color} {
+	//std::cout << "Hier benutze ich den Konstruktor von Shape!\n";
+	}      
+ 
+Shape::~Shape() {
+	//std::cout << "Hier benutze ich den Destruktor von Shape!\n";
+}
 
 // Aufgabe 5.4
 ostream& Shape::print(ostream& os) const{ 

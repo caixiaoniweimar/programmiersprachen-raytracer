@@ -91,7 +91,23 @@ TEST_CASE("intersect_ray_sphere","[intersect]"){
 		sphere_center,
 		sphere_radius*sphere_radius,
 		distance);
+	REQUIRE( result ==true);
 	REQUIRE( distance==Approx(4.0f) );
+}
+
+TEST_CASE("intersect","[intersect_ray]"){
+	Sphere sphere1{glm::vec3{0.0f,0.0f,5.0f},1.0f};
+	Ray ray{};
+	float distance=0.0f;
+	auto result =sphere1.intersect(ray,distance);
+	REQUIRE( result==false );
+	REQUIRE( distance==Approx(-4.0f) );
+
+	Ray ray1{ glm::vec3{0.0f,0.0f,0.0f}, glm::vec3{0.0f,0.0f,1.0f}};
+	float distance1=0.0f;
+	auto result1 =sphere1.intersect(ray1,distance1);
+	REQUIRE( result1==true );
+	REQUIRE( distance1==Approx(4.0f) );
 }
 
 int main(int argc, char *argv[])
