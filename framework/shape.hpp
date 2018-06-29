@@ -4,6 +4,7 @@
 #include <cmath>
 #include <iostream>    
 #include "color.hpp"
+#include "ray.hpp"
 using namespace std;    
   
 class Shape{
@@ -22,6 +23,9 @@ public:
 
 // Aufgabe 5.4
 		virtual ostream& print(ostream& os) const;
+
+// Aufgabe 6.3
+		virtual bool intersect (Ray const& ray, float& distance)=0;
 
 // Aufgabe 5.3
 protected: // abgleiteted Klasse wird diese Attribute aufrufen( vererben diese Attribute als private )
