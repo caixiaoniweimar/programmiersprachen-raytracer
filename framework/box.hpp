@@ -4,6 +4,7 @@
 #include "shape.hpp"
 #include <string>
 #include "color.hpp"
+#include "ray.hpp"
 //Minimum und Maximum vec3
 // Konstruktoren; get-Methoden; Methoden area und volume
 class Box : public Shape{
@@ -22,6 +23,9 @@ public:
 
 // Aufgabe 5.5
 	ostream& print(ostream& os) const override;
+
+// Aufgabe 6.3
+	bool intersect (Ray const& ray, float& distance) override;
 
 private:
 	glm::vec3 minimum_;

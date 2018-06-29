@@ -1,6 +1,8 @@
 #include "box.hpp"
 #include <glm/vec3.hpp>
-
+#include <glm/glm.hpp>
+#include <glm/gtx/intersect.hpp>
+using namespace std;
 // Aufgabe 5.2
 Box::Box():
 	Shape(),
@@ -49,6 +51,13 @@ Box::~Box() {}
 		<<" Minimum: "<<"( "<<minimum_.x<<","<<minimum_.y<<","<<minimum_.z<<" )";
 		return os;
 	}
+
+// Aufgabe 6.3
+bool Box::intersect (Ray const& ray, float& distance){
+	glm::vec3 ray_direction = glm::normalize(ray.direction);
+	//auto result=
+	//return result;
+}
 
 
 
