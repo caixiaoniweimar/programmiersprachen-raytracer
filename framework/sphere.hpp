@@ -31,7 +31,7 @@ public:
 	ostream& print(ostream& os) const override;
 
 // Aufgabe 5.6
-	bool intersect(Ray const& ray,float& distance) const;
+	bool intersect (Ray const& ray, float& distance) override;
 
 private:
 	glm::vec3 mittelpunkt_;

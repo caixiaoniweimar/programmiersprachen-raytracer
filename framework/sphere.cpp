@@ -54,7 +54,7 @@ using namespace std;
 	}
 
 // Aufgabe 5.6
-	bool Sphere::intersect(Ray const& ray,float& distance) const{ 
+	bool Sphere::intersect(Ray const& ray,float& distance){ 
 		glm::vec3 ray_direction=glm::normalize(ray.direction);
 		auto result=glm::intersectRaySphere(ray.origin, ray_direction, mittelpunkt_, radius_*radius_, distance);
 		return result;
