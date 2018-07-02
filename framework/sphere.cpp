@@ -17,8 +17,8 @@ using namespace std;
 		{}
 
 // Aufgabe 5.3
-	Sphere::Sphere(string const& name, Color const& color, glm::vec3 const& mittelpunkt, double radius):
-		Shape(name, color), // 重要!!!!
+	Sphere::Sphere(string const& name, shared_ptr<Material> const& material, glm::vec3 const& mittelpunkt, double radius):
+		Shape(name, material), // 重要!!!!
 		// einzige Moeglichkeit um auf die Membervariable der Basisklasse zuzugreifen
 		mittelpunkt_{mittelpunkt},
 		radius_{radius} {
@@ -54,9 +54,9 @@ using namespace std;
 	}
 
 // Aufgabe 5.6
-	bool Sphere::intersect(Ray const& ray,float& distance){ 
+	bool Sphere::intersect(Ray const& ray,float& t){ 
 		glm::vec3 ray_direction=glm::normalize(ray.direction);
-		auto result=glm::intersectRaySphere(ray.origin, ray_direction, mittelpunkt_, radius_*radius_, distance);
+		auto result=glm::intersectRaySphere(ray.origin, ray_direction, mittelpunkt_, radius_*radius_, t);
 		return result;
 	}
 	// Mit reference veraedert die Variable ausserhalb 

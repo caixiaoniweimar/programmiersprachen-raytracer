@@ -5,13 +5,15 @@
 #include <iostream>    
 #include "color.hpp"
 #include "ray.hpp"
+#include "material.hpp"
 using namespace std;    
   
 class Shape{
 public:
 // Aufgabe 5.3
 		Shape();
-		Shape(string const& name, Color const& color);
+		//Shape(string const& name, Color const& color);
+		Shape(string const& name, shared_ptr<Material> const& material);
 		virtual ~Shape();
 	    //~Shape();
 		// Destruktoren legt man nur an wenn sie Sekundärressourcen freigeben muessen 
@@ -25,12 +27,15 @@ public:
 		virtual ostream& print(ostream& os) const;
 
 // Aufgabe 6.3
-		virtual bool intersect (Ray const& ray, float& distance)=0;
+		virtual bool intersect (Ray const& ray, float& t)=0;
 
 // Aufgabe 5.3
 protected: // abgleiteted Klasse wird diese Attribute aufrufen( vererben diese Attribute als private )
 		string name_;
-		Color color_;
+		//Color color_;
+// Aufgabe 6.4
+		shared_ptr<Material> material_;
+
 	
 };
 

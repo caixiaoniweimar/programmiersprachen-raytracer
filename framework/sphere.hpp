@@ -7,6 +7,7 @@
 #include <string>
 #include "color.hpp"
 #include "ray.hpp"
+#include "material.hpp"
 // Mittelpunkt und einen Radius
 // Konstruktor; get-Methoden; Methoden area und volume
 
@@ -18,7 +19,7 @@ public:
 	//Sphere(glm::vec3 const& mittelpunkt, double radius=1.0f);
 	// Dafault Werte um die Groesse des Sphere zu setzen, aehnlich wie Standardkonstruktor
 
-	Sphere(string const& name, Color const& color, glm::vec3 const& mittelpunkt, double radius);
+	Sphere(string const& name, shared_ptr<Material> const& material, glm::vec3 const& mittelpunkt, double radius);
 	~Sphere();
 
 	double area() const override;		// area(),volume() 在hpp写override, 在cpp不需要
@@ -31,7 +32,7 @@ public:
 	ostream& print(ostream& os) const override;
 
 // Aufgabe 5.6
-	bool intersect (Ray const& ray, float& distance) override;
+	bool intersect (Ray const& ray, float& t) override;
 
 private:
 	glm::vec3 mittelpunkt_;
