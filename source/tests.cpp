@@ -11,6 +11,7 @@
 #include <iostream>
 #include <memory>
 #include <ray.hpp>
+#include <material.hpp>
 using namespace std;
 // Aufgabe 5.2
 TEST_CASE ("test_area_sphere_box","[area]"){ //Standardkonstruktor
@@ -110,9 +111,31 @@ TEST_CASE("intersect","[intersect_ray]"){
 	REQUIRE( distance1==Approx(4.0f) );
 }
 
+// Aufgabe 6.3
+TEST_CASE("intersect_box","[intersect_box]"){
+	Box box1{ glm::vec3{1.0f,0.0f,0.0f},glm::vec3{6.0f,5.0f,5.0f} };
+	Ray ray{ glm::vec3{0.0f,0.0f,0.0f}, glm::vec3{2.0f,2.0f,2.0f} }; // 第一点0,0,0 第二点2,2,2
+	float distance=0.0f; // egal
+	auto result=box1.intersect(ray,distance);
+	REQUIRE( result == true );
+
+	Box box2{ glm::vec3{0.0f,0.0f,0.0f},glm::vec3{5.0f,5.0f,5.0f} };
+	Ray ray2{ glm::vec3{0.0f,0.0f,0.0f}, glm::vec3{-1.0f,-2.0f,0.0f} };
+	float distance2=1.0f; 
+	auto result2=box2.intersect(ray2,distance2);
+	REQUIRE( result2 == false );
+
+	Box box3{ glm::vec3{1.0f,0.0f,0.0f},glm::vec3{6.0f,5.0f,5.0f} };
+	Ray ray3{ glm::vec3{0.0f,0.0f,0.0f}, glm::vec3{0.001f,0.001f,0.001f} }; // 第一点0,0,0 第二点2,2,2
+	float distance3=0.0f; // egal
+	auto result3=box3.intersect(ray3,distance3);
+	REQUIRE( result3 == true );
+
+}
+
 int main(int argc, char *argv[])
 {
-// Aufgabe 5.5
+/*// Aufgabe 5.5
   cout<<"Aufgabe 5.5:"<<endl;
   Sphere sphere1{};
   cout<<sphere1<<endl;
@@ -130,6 +153,9 @@ int main(int argc, char *argv[])
   cout<<endl;
   s2->print(cout);
   cout<<endl;
+*/
+  Material m{"name",{1,1,1},{2,3,2},{3,2,3},5};
+  cout<<m<<endl;
 
   return Catch::Session().run(argc, argv);
 }

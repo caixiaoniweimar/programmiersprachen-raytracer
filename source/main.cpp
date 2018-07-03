@@ -5,11 +5,12 @@
 #include <box.hpp>
 #include <color.hpp>
 #include <glm/vec3.hpp>
- 
+#include <scene.hpp>
+//#include <scenes/beispiel.sdf>
 using namespace std;
 
 int main(){
-// Aufgabe 5.8
+/*// Aufgabe 5.8
 {
   cout<<"Aufgabe 5.8:"<<endl;
   Color red{255,0,0};
@@ -42,5 +43,7 @@ int main(){
   	std::cout << "\n";
   }
   std::cout << "end of test for task 5.8\n\n";
-
+*/
+  open_sdf_datei("beispiel.txt");
+  return 0;
 }
