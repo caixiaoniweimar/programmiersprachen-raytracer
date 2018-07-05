@@ -61,11 +61,20 @@ bool Box::intersect (Ray const& ray, float& t){
 	glm::vec3 schnittpunkt{0.0f,0.0f,0.0f};
 	// 判断射线与盒x轴方向的面是否有交点, 射线x轴方向分量不为0, 如果射线方向矢量的x轴分量为0, 射线不可能经过盒朝x轴方向的两个面
 // x-Achse Richtung zwei Seite 
+//   A non-zero value (true) if x is an infinity; and zero (false) otherwise.
+//   如果x是无穷大，则为非零值（true）; 否则为零（假）。
 	if( ray_direction.x != 0 ){
-		if(ray_direction.x > 0)//射线沿x轴正方向偏移
+
+		if(ray_direction.x > 10e-6 )//射线沿x轴正方向偏移 // 0.0001
 			{ 
 				t=(minimum_.x - ray_origin.x) / ray_direction.x;
-				cout<<"t: "<<t<<endl;
+				bool is_infinity = isinf(t);
+				if(is_infinity==true){
+					cerr<<"Schnittpunkt existiert nicht."<<endl;
+				}
+				else{
+					cout<<"t: "<<t<<endl;
+				}
 			}
 		else{	//射线沿x轴负方向偏移
 				t=(maximum_.x - ray_origin.x) / ray_direction.x;
@@ -86,7 +95,7 @@ bool Box::intersect (Ray const& ray, float& t){
 	}
 // y-Achse Richtung zwei Seite
 	if( ray_direction.y !=0 ){
-		if(ray_direction.y >0 ){
+		if(ray_direction.y > 10e-6 ){
 			t=(minimum_.y - ray_origin.y) / ray_direction.y;
 		}
 		else{
@@ -103,7 +112,7 @@ bool Box::intersect (Ray const& ray, float& t){
 	}
 // z-Achse Richtung zwei Seite
 	if( ray_direction.z !=0 ){
-		if(ray_direction.z >0 ){
+		if(ray_direction.z > 10e-6 ){
 			t=(minimum_.z - ray_origin.z) / ray_direction.z;
 		}
 		else{

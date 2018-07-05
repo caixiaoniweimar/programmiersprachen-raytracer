@@ -131,32 +131,18 @@ TEST_CASE("intersect_box","[intersect_box]"){
 	auto result3=box3.intersect(ray3,distance3);
 	REQUIRE( result3 == true );
 
+	Box box4{ glm::vec3{1.0f,0.0f,0.0f},glm::vec3{6.0f,5.0f,5.0f} };
+	Ray ray4{ glm::vec3{0.0f,0.0f,0.0f}, glm::vec3{0.001f,0.001f,0.001f} }; 
+	float distance4=0.0f; // egal
+	auto result4=box4.intersect(ray4,distance4);
+	REQUIRE( result4 == true );
+
 }
 
 int main(int argc, char *argv[])
 {
-/*// Aufgabe 5.5
-  cout<<"Aufgabe 5.5:"<<endl;
-  Sphere sphere1{};
-  cout<<sphere1<<endl;
-  Box box2{ glm::vec3{1.0f,2.0f,3.0f}, glm::vec3{5.0f,5.0f,5.0f} };
-  cout<<box2<<endl;
-  cout<<endl;
-
-// Aufgabe 5.7
-  cout<<"Aufgabe 5.7:"<<endl;
-  Color red{255,0,0};
-  glm::vec3 position{0.0f,0.0f,0.0f};
-  shared_ptr<Sphere> s1=std::make_shared<Sphere>( "sphere0", red, position, 1.2 );
-  shared_ptr<Shape> s2=std::make_shared<Sphere> ( "sphere1", red, position, 1.2 );
-  s1->print(cout);
-  cout<<endl;
-  s2->print(cout);
-  cout<<endl;
-*/
   Material m{"name",{1,1,1},{2,3,2},{3,2,3},5};
   cout<<m<<endl;
 
   return Catch::Session().run(argc, argv);
 }
-
