@@ -23,7 +23,7 @@ Scene open_sdf_datei(string const& filename){
              istrm>>differ_string;
              if(differ_string=="material"){
               cout<<" material"<<endl;
-              auto c = make_shared<Material>();
+              auto c = make_shared<Material>(); // shared_ptr<Material> c
               istrm>>c->name;
               istrm>>(c->ka).r;
               istrm>>(c->ka).g;
@@ -45,8 +45,72 @@ Scene open_sdf_datei(string const& filename){
 
               (scene.vector_material).push_back(c); // vector
               (scene.set_material).insert(c);       // set        
-              (scene.map_material).insert(make_pair(c->name,c)); // map
-                         
+              (scene.map_material).insert(make_pair(c->name,c)); // map              
+             }
+// Aufgabe 7.2 Datei SDF shape lesen
+             if(differ_string=="shape"){
+              cout<<" shape" <<endl;
+              istrm>>differ_string;
+              if(differ_string=="box"){
+                auto box_objekt = make_shared<Box>(); // shared_ptr<Box>
+          
+                box_objekt->set_name(differ_string);
+                string name_box=box_objekt->get_name();
+                istrm>> name_box;
+
+                istrm>> (box_objekt->minimum_).x;
+                istrm>> (box_objekt->minimum_).y;
+                istrm>> (box_objekt->minimum_).z;
+                istrm>> (box_objekt->maximum_).x;
+                istrm>> (box_objekt->maximum_).y;
+                istrm>> (box_objekt->maximum_).z;
+                istrm>> differ_string;
+                box_objekt->material_=  map_find(differ_string,scene.map_material);
+
+                (scene.container_objekt).push_back(box_objekt);
+
+                cout<<box_objekt->get_name()<<" "<<(box_objekt->minimum_).x<<" "<<(box_objekt->minimum_).y<<" "
+                    <<(box_objekt->minimum_).z<<" "<<(box_objekt->maximum_).x<<" "<<(box_objekt->maximum_).y<<" "<<
+                    (box_objekt->maximum_).z<<" "<<(box_objekt->material_)->name<<endl;
+               // (scene.composite_objekt).add(box_objekt);
+              }
+             if(differ_string=="sphere"){
+                auto sphere_objekt = make_shared<Sphere>();
+
+                sphere_objekt->set_name(differ_string);
+                string name_sphere=sphere_objekt->get_name();
+                istrm>> name_sphere;
+
+                istrm>> (sphere_objekt->mittelpunkt_).x;
+                istrm>> (sphere_objekt->mittelpunkt_).y;
+                istrm>> (sphere_objekt->mittelpunkt_).z;
+                istrm>> sphere_objekt->radius_;
+              
+                istrm>> differ_string;
+                sphere_objekt->material_=map_find(differ_string,scene.map_material);
+                (scene.container_objekt).push_back(sphere_objekt);
+
+                cout<<sphere_objekt->get_name()<<" "<<(sphere_objekt->mittelpunkt_).x<<" "<<(sphere_objekt->mittelpunkt_).y<<" "
+                <<(sphere_objekt->mittelpunkt_).z<<" "<<sphere_objekt->radius_<<" "<<(sphere_objekt->material_)->name<<endl;
+               
+               // (scene.composite_objekt).add(sphere_objekt);
+              }
+// Aufgabe 7.2 unsicher 先不要做
+             /* if(differ_string=="composite"){
+                // 也就是意味着 读SDF的时候 我需要知道我加入的对象的类型和名字？且顺序,不可以是shape
+                   istrm>>(scene.composite_objekt).name_;
+
+                   auto objekt = make_shared<Box> ();
+                   istrm>> objekt->name_;
+                   (scene.composite_objekt).add(objekt);
+
+                   auto objekt1 = make_shared<Sphere> ();
+                   istrm>> objekt1->name_;
+                   (scene.composite_objekt).add(objekt1);  
+
+                   cout<<(scene.composite_objekt).composite_.front()->name_<<endl; 
+              }*/
+
              }
     }
   }
@@ -59,12 +123,12 @@ material_ptr vector_find(string const& such_name, vector<material_ptr> vector_ma
   auto t = find_if( vector_material.begin(), vector_material.end(), 
            [&such_name](shared_ptr<Material> const& m){ return (m->name)==such_name; } ); //Lamdas
  if( t!=vector_material.end() ){
-    cout<<"Find it!"<<endl;
-    cout<< *(*t)<<endl; //!!!!!超级重要！！！！！
+    //cout<<"Find it!"<<endl;
+    //cout<< *(*t)<<endl; //!!!!!超级重要！！！！！
     return *t;
   }
   else{
-     cout<<"Find it not."<<endl;
+     //cout<<"Find it not."<<endl;
      return nullptr;
   }
 }
@@ -74,12 +138,12 @@ material_ptr map_find(string const& such_name, map<string, shared_ptr<Material> 
   auto it = map_material.find(such_name);
   if( it != map_material.end() )
   {
-    cout<<"Find it!"<<endl;
-    cout<<*(it->second)<<endl;
+    //cout<<"Find it!"<<endl;
+    //cout<<*(it->second)<<endl;
     return it->second;
   }
  else{
-    cout<<"Find it not."<<endl;
+    //cout<<"Find it not."<<endl;
     return nullptr;
   }
 }
@@ -98,38 +162,3 @@ material_ptr set_find(string const& such_name, set< shared_ptr<Material> > set_m
      return nullptr;
   }
 }
-  // Fuer Geometry
-  /*Box b;
-  string box_name = b.name_;
-  float  min_x= (b.minimum_).x;
-  float  min_y= (b.minimum_).y;
-  float  min_z= (b.minimum_).z;
-
-  float  max_x= (b.maximum_).x;
-  float  max_y= (b.maximum_).y;
-  float  max_z= (b.maximum_).z;*/
-/*if(differ_string=="shape"){
-              cout<<" shape"<<endl;
-              istrm>>differ_string;
-              if(differ_string=="box"){
-                istrm>>box_name;
-                istrm>>min_x;
-                istrm>>min_y;
-                istrm>>min_z;
-                istrm>>max_x;
-                istrm>>max_y;
-                istrm>>max_z;
-                //istrm>>c;
-                //cout<<box_name<<" "<<min_x<<" "<<min_y<<" "<<min_z<<" "<<max_x<<" "<<max_y<<" "<<max_z<<" "
-              }
-             }
-             if(differ_string=="light"){
-              cout<<" light"<<endl;
-             }
-             if(differ_string=="camera"){
-              cout<<" camera"<<endl;
-             }
-        }
-        if(differ_string=="render"){
-          cout<<"render"<<endl;
-        }*/

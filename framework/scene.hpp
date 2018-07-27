@@ -15,6 +15,7 @@
 #include <map>
 using namespace std;
 #include <algorithm>
+#include "composite.hpp"
 
 using material_ptr = std::shared_ptr<Material>;
 
@@ -22,6 +23,9 @@ struct Scene{
 	vector<shared_ptr<Material>> vector_material;
 	set<shared_ptr<Material>> set_material;
 	map<string, shared_ptr<Material>> map_material;
+
+// Aufgabe 7.2
+	vector<shared_ptr<Shape>> container_objekt;
 };
 // Aufgabe 6.5
 Scene open_sdf_datei(string const& filename);
