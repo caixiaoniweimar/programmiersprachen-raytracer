@@ -15,7 +15,9 @@
 #include <map>
 using namespace std;
 #include <algorithm>
-#include "composite.hpp"
+#include "light.hpp"
+#include "camera.hpp"
+
 
 using material_ptr = std::shared_ptr<Material>;
 
@@ -26,6 +28,10 @@ struct Scene{
 
 // Aufgabe 7.2
 	vector<shared_ptr<Shape>> container_objekt;
+	vector<Light> container_light;
+	Camera camera{};
+
+	Color ambiente{0.1f,0.1f,0.1f}; 
 };
 // Aufgabe 6.5
 Scene open_sdf_datei(string const& filename);

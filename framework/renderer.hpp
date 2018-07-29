@@ -15,7 +15,17 @@
 #include "ppmwriter.hpp"
 #include <string>
 #include <glm/glm.hpp>
-
+#include "scene.hpp"
+#include "sphere.hpp"
+#include "camera.hpp"
+#include <algorithm>
+#include <glm/vec3.hpp>
+#include <glm/glm.hpp>
+#include <glm/gtx/intersect.hpp>
+#include "light.hpp"
+#include <iostream>
+#include "shape.hpp"
+#include "material.hpp"
 class Renderer
 {
 public:
@@ -24,6 +34,8 @@ public:
   void render();
   void write(Pixel const& p);
 
+  void render1(Camera const& camera,Sphere const& sphere);
+  void render1(Camera const& camera,Material const& material,Sphere const& sphere, Color const& ambiente,Light const& light);
   inline std::vector<Color> const& color_buffer() const
   {
     return color_buffer_;

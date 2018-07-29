@@ -53,7 +53,7 @@ Box::~Box() {}
 	}
 
 // Aufgabe 6.3
-bool Box::intersect (Ray const& ray, float& t){
+bool Box::intersect (Ray const& ray, float& t) const{
 	//glm::vec3 ray_direction = glm::normalize(ray.direction); //方向矢量
 	glm::vec3 ray_direction = ray.direction;
 	glm::vec3 ray_origin = ray.origin; 

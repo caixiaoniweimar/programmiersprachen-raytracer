@@ -29,7 +29,6 @@ void Renderer::render()
       } else {
         p.color = Color(1.0, 0.0, float(y)/width_);
       }
-
       write(p);
     }
   }
@@ -51,3 +50,56 @@ void Renderer::write(Pixel const& p)
 
   ppm_.write(p);
 }
+
+/*void Renderer::render1(Camera const& camera,Sphere const& sphere){
+  for(unsigned y=0; y<height_; ++y){
+     float sy= 1.0-y*1.0/height_;
+    for(unsigned x=0; x<width_; ++x){
+
+      float sx= x*1.0/width_;
+      Pixel p(x,y);
+      Ray ray= camera.erzeugen_ray(sx,sy);
+      float t=2000;
+      auto result = sphere.istIntersect(ray,t);
+      if(result.hit==true){
+        float t=min(result.distance*(255.0f/18),255.0f);  // maximal Depth
+        float depth=(255.0f-t)/255.0f;
+        p.color=Color(depth,depth,depth); // white
+      }
+      else{
+        p.color=Color(0,0,0); //schwarz
+      }
+     write(p);
+    }
+  }
+  ppm_.save(filename_);
+}*/
+
+void Renderer::render1(Camera const& camera,Material const& material, Sphere const& sphere, Color const& ambiente, Light const& light){
+  for(unsigned y=0; y<height_; ++y){
+     float sy= 1.0-y*1.0/height_;
+    for(unsigned x=0; x<width_; ++x){
+
+      float sx= x*1.0/width_;
+      Pixel p(x,y);
+      Ray ray= camera.erzeugen_ray(sx,sy);
+      float t=2000;
+      intersectionResult result = sphere.istIntersect(ray,t);
+      if(result.hit==true){
+        p.color = {0,0,0};
+        p.color += sphere.rechnen_diffuse_reflexion(light,material,result,ambiente);
+        //cout<<L.r<<" "<<L.g<<" "<<L.b<<" "<<(float)glm::dot(L,N)<<" "<<N.r<<" "<<N.g<<" "<<N.b<<endl;
+        //cout<<p.color.r<<" "<<p.color.g<<" "<<p.color.b<<endl;
+        //cout<<N1.r<<" "<<N1.g<<" "<<N1.b<<endl;
+
+      }
+      else{
+        p.color = {0,0,0};
+      }
+     write(p);
+    }
+  }
+  ppm_.save(filename_);
+}
+
+

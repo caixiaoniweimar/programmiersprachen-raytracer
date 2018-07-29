@@ -27,13 +27,17 @@ public:
 		virtual ostream& print(ostream& os) const;
 
 // Aufgabe 6.3
-		virtual bool intersect (Ray const& ray, float& t)=0;
+		virtual bool intersect (Ray const& ray, float& t) const=0;
+
+		void set_name(string const& name);
+		string get_name() const;
 
 // Aufgabe 5.3
-protected: // abgleiteted Klasse wird diese Attribute aufrufen( vererben diese Attribute als private )
+// abgleiteted Klasse wird diese Attribute aufrufen( vererben diese Attribute als private )
 		string name_;
 		//Color color_;
 // Aufgabe 6.4
+
 		shared_ptr<Material> material_;
 
 	

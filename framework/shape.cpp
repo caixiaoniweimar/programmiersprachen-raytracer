@@ -18,6 +18,13 @@ Shape::~Shape() {
 	//std::cout << "Hier benutze ich den Destruktor von Shape!\n";
 }
 
+void Shape::set_name(string const& name){
+	this->name_=name;
+}
+string Shape::get_name() const{
+	return name_;
+}
+
 // Aufgabe 5.4
 ostream& Shape::print(ostream& os) const{  //重要！！！material_ -> name  区别于material.hpp中的<<重载 这里是 
 	// shape对象的material属性 再到material的类中 读material的ka,name等属性 所以需要"->"

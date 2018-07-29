@@ -22,7 +22,7 @@ Scene open_sdf_datei(string const& filename){
              cout<<"define";
              istrm>>differ_string;
              if(differ_string=="material"){
-              cout<<" material"<<endl;
+              cout<<" material ";
               auto c = make_shared<Material>(); // shared_ptr<Material> c
               istrm>>c->name;
               istrm>>(c->ka).r;
@@ -49,7 +49,7 @@ Scene open_sdf_datei(string const& filename){
              }
 // Aufgabe 7.2 Datei SDF shape lesen
              if(differ_string=="shape"){
-              cout<<" shape" <<endl;
+              cout<<" shape ";
               istrm>>differ_string;
               if(differ_string=="box"){
                 auto box_objekt = make_shared<Box>(); // shared_ptr<Box>
@@ -95,29 +95,35 @@ Scene open_sdf_datei(string const& filename){
                
                // (scene.composite_objekt).add(sphere_objekt);
               }
-// Aufgabe 7.2 unsicher 先不要做
-             /* if(differ_string=="composite"){
-                // 也就是意味着 读SDF的时候 我需要知道我加入的对象的类型和名字？且顺序,不可以是shape
-                   istrm>>(scene.composite_objekt).name_;
-
-                   auto objekt = make_shared<Box> ();
-                   istrm>> objekt->name_;
-                   (scene.composite_objekt).add(objekt);
-
-                   auto objekt1 = make_shared<Sphere> ();
-                   istrm>> objekt1->name_;
-                   (scene.composite_objekt).add(objekt1);  
-
-                   cout<<(scene.composite_objekt).composite_.front()->name_<<endl; 
-              }*/
-
              }
+      if(differ_string=="light"){
+                Light light{};
+                istrm >> light.name_;
+                istrm >> light.position_.x;
+                istrm >> light.position_.y;
+                istrm >> light.position_.z;
+                istrm >> light.color_.r;
+                istrm >> light.color_.g;
+                istrm >> light.color_.b;
+                istrm >> light.brightness_;
+                (scene.container_light).push_back(light);
+                cout<<" "<<light.name_<<" "<<light.position_.x<<" "<<light.position_.y<<" "<<
+                    light.position_.z<<" "<<light.color_.r<<" "<<light.color_.g<<" "
+                    <<light.color_.b<<" "<<light.brightness_<<endl;
+            }
+      if(differ_string=="camera"){ 
+                istrm>> (scene.camera).name_;
+                istrm>> (scene.camera).fov_x_;
+                cout<<" "<<(scene.camera).name_<<" "<<(scene.camera).fov_x_<<endl;     
+        }   
+
+      }
     }
   }
-}
 inf.close();
 return scene;
 }
+
 // Aufgabe 6.5 Find-Methode fuer vector!!!!!
 material_ptr vector_find(string const& such_name, vector<material_ptr> vector_material){
   auto t = find_if( vector_material.begin(), vector_material.end(), 

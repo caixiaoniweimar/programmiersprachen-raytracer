@@ -26,9 +26,11 @@ public:
 	ostream& print(ostream& os) const override;
 
 // Aufgabe 6.3
-	bool intersect (Ray const& ray, float& t) override;
+	bool intersect (Ray const& ray, float& t) const override;
 
-private:
+
+
+public:
 	glm::vec3 minimum_;
 	glm::vec3 maximum_;
 };

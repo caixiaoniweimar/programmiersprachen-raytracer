@@ -2,13 +2,24 @@
 #define MATERIAL_HPP
 #include "color.hpp"
 #include <iostream>
+#include <glm/vec3.hpp>
+#include <glm/glm.hpp>
+#include <glm/gtx/intersect.hpp>
+
 using namespace std;
 struct Material{
-	string name="default material_name";
-	Color ka{0,0,0};
-	Color kd{0,0,0};
-	Color ks{0,0,0};
-	float exponente_m=0.0f;
+	string name;
+	Color ka;
+	Color kd;
+	Color ks;
+	float exponente_m;
+
+  Material():
+    name{"default material_name"},
+    ka{0,0,1},
+    kd{0,0,1},
+    ks{0,0,1},
+    exponente_m{10.0f} {}
 
 	friend ostream& operator<<(ostream& os, Material const& m)
   {
@@ -19,7 +30,12 @@ struct Material{
     return os;
   }
 
+  Color get_ka() const{
+    return ka;
+  }
+
 };
+
 
 
 #endif
