@@ -45,6 +45,10 @@ using namespace std;
 		return radius_;
 	}
 
+	shared_ptr<Material> Sphere::get_Material() const {
+		return material_;
+	}
+
 // Aufgabe 5.5
 	ostream& Sphere::print(ostream& os) const {
 		Shape::print(os);
@@ -54,11 +58,51 @@ using namespace std;
 	}
 
 // Aufgabe 5.6
-	bool Sphere::intersect(Ray const& ray,float& t){ 
+	bool Sphere::intersect(Ray const& ray,float& t) const{ 
 		glm::vec3 ray_direction=glm::normalize(ray.direction);
 		auto result=glm::intersectRaySphere(ray.origin, ray_direction, mittelpunkt_, radius_*radius_, t);
 		return result;
 	}
 	// Mit reference veraedert die Variable ausserhalb 
 	// Mit per value veraedert die Variable nur innerhalb der Methode 
+
+    glm::vec3 Sphere::getNormal(glm::vec3 schnittpunkt) const{
+    	return glm::vec3{ (schnittpunkt - mittelpunkt_)/((float)radius_)};
+    }
+
+    // getNormal Methode gleich wie result.normal!!!
+
+    intersectionResult Sphere::istIntersect(Ray const& ray,float& t) const{
+    	intersectionResult result{};
+    	if(intersect(ray,t)==true)
+    		{	
+    			result.hit=true;
+    			result.distance = t;
+    			result.position=ray.getpoint(result.distance);
+    			result.normal = glm::normalize(result.position - mittelpunkt_);
+    		}
+    	return result;
+    }
+
+    Color Sphere::rechnen_diffuse_reflexion(Light const& light, Material const& material, intersectionResult const& result, Color const& ambiente) const{
+        glm::vec3 L = glm::normalize(light.position_ - result.position);
+        glm::vec3 N = result.normal; //glm::vec3 N = sphere.getNormal(result.position);
+        Color diffuseColor = light.rechnen_intensitaet() * (material.kd) * glm::dot(L,N);
+        Color reflexion = diffuseColor + ambiente*(material.ka); 
+        return reflexion+diffuseColor;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	

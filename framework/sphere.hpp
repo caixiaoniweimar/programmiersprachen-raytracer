@@ -8,6 +8,9 @@
 #include "color.hpp"
 #include "ray.hpp"
 #include "material.hpp"
+#include "intersection_Result.hpp"
+#include "light.hpp"
+using namespace std;
 // Mittelpunkt und einen Radius
 // Konstruktor; get-Methoden; Methoden area und volume
 
@@ -28,23 +31,23 @@ public:
 	glm::vec3 get_mittelpunkt() const; // get_Methode() 为const
 	double get_radius() const;
 
+	shared_ptr<Material> get_Material() const;
+
 // Aufgabe 5.5
 	ostream& print(ostream& os) const override;
 
 // Aufgabe 5.6
-	bool intersect (Ray const& ray, float& t) override;
+	bool intersect (Ray const& ray, float& t) const override;
+	intersectionResult istIntersect(Ray const& ray,float& t) const;
 
-private:
+	glm::vec3 getNormal(glm::vec3 schnittpunkt) const;
+	Color rechnen_diffuse_reflexion(Light const& light,Material const& material, intersectionResult const& result, Color const& ambiente) const;
+
 	glm::vec3 mittelpunkt_;
 	double radius_;
 
 };
 
-/*struct Ray{
-	glm::vec3 origin={0.0f,0.0f,0.0f};
-	glm::vec3 direction={0.0f,0.0f,-1.0f};
-};*/
 
-// Aufgabe 5.6
 	
 #endif
