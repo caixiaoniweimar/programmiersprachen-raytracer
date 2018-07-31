@@ -7,7 +7,6 @@
 #include <glm/vec3.hpp>
 #include <scene.hpp>
 #include <material.hpp>
-//#include <scenes/beispiel.sdf>
 using namespace std;
 
 // Aufgabe 6.5
@@ -21,10 +20,11 @@ bool operator== (shared_ptr<Material> const& m1, shared_ptr<Material> const& m2)
 
 int main(){
   Scene s1;
-  s1=open_sdf_datei("beispiel.txt");
+  s1=open_sdf_datei("beispiel.xsd");
+  cout<<endl;
+  cout<<"Test Find:"<<endl;
 // Find Methode fuer vector
   vector<shared_ptr<Material>> v1 = s1.vector_material;
-  cout<<endl;
   cout<<"Find Methode fuer vector:"<<endl;
   vector_find("red",v1);
   vector_find("blue",v1);
@@ -43,6 +43,5 @@ int main(){
   set_find("red",set1);
   set_find("blue",set1);
   set_find("green",set1);
-
   return 0;
 }
