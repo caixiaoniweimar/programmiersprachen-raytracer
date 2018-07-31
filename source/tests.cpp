@@ -12,6 +12,8 @@
 #include <memory>
 #include <ray.hpp>
 #include <material.hpp>
+#include <camera.hpp>
+#include <scene.hpp>
 using namespace std;
 // Aufgabe 5.2
 TEST_CASE ("test_area_sphere_box","[area]"){ //Standardkonstruktor
@@ -140,9 +142,6 @@ TEST_CASE("intersect_box","[intersect_box]"){
 }
 
 int main(int argc, char *argv[])
-{
-  Material m{"name",{1,1,1},{2,3,2},{3,2,3},5};
-  cout<<m<<endl;
-
+{	
   return Catch::Session().run(argc, argv);
 }
