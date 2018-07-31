@@ -10,12 +10,13 @@
 #include "material.hpp"
 #include "intersection_Result.hpp"
 #include "light.hpp"
+#include "camera.hpp"
 using namespace std;
 // Mittelpunkt und einen Radius
 // Konstruktor; get-Methoden; Methoden area und volume
 
 class Sphere : public Shape{
-public:
+public: 
 // Aufgabe 5.2     
 	Sphere();
 	Sphere(glm::vec3 const& mittelpunkt, double radius);
@@ -38,10 +39,9 @@ public:
 
 // Aufgabe 5.6
 	bool intersect (Ray const& ray, float& t) const override;
-	intersectionResult istIntersect(Ray const& ray,float& t) const;
+	intersectionResult istIntersect(Ray const& ray,float& t) const override;
 
 	glm::vec3 getNormal(glm::vec3 schnittpunkt) const;
-	Color rechnen_diffuse_reflexion(Light const& light,Material const& material, intersectionResult const& result, Color const& ambiente) const;
 
 	glm::vec3 mittelpunkt_;
 	double radius_;

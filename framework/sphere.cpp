@@ -84,13 +84,30 @@ using namespace std;
     	return result;
     }
 
-    Color Sphere::rechnen_diffuse_reflexion(Light const& light, Material const& material, intersectionResult const& result, Color const& ambiente) const{
+    /*Color Sphere::rechnen_diffuse_reflexion(Light const& light, Material const& material, intersectionResult const& result, Color const& ambiente) const{
         glm::vec3 L = glm::normalize(light.position_ - result.position);
         glm::vec3 N = result.normal; //glm::vec3 N = sphere.getNormal(result.position);
-        Color diffuseColor = light.rechnen_intensitaet() * (material.kd) * glm::dot(L,N);
+        Color diffuseColor = light.rechnen_intensitaet() * (material.kd) * std::max(glm::dot(L,N),(float)0);
         Color reflexion = diffuseColor + ambiente*(material.ka); 
         return reflexion+diffuseColor;
-    }
+    }*/
+
+    /*Color Sphere::rechnen_diffuse_reflexion(Light const& light, Camera const& camera, Material const& material, intersectionResult const& result, Color const& ambiente) const{
+        glm::vec3 L = glm::normalize(light.position_ - result.position);
+        glm::vec3 N = result.normal; //glm::vec3 N = sphere.getNormal(result.position);
+        float LNdot = glm::dot(L,N); // erlaubt klein 0?
+
+        glm::vec3 R = glm::normalize(2 * LNdot * N-L);
+        glm::vec3 V = glm::normalize( camera.eye_ - result.position );
+
+        float RVdot = glm::dot(R,V);
+
+        Color spiegeln = (material.ks) * (pow(std::max(RVdot,(float)0),material.exponente_m ));
+        Color diffuseColor = light.rechnen_intensitaet() * (material.kd) * std::max(glm::dot(L,N),(float)0);
+        Color reflexion = ambiente*(material.ka); 
+        return reflexion+diffuseColor+spiegeln;
+    }*/
+   
 
 
 
