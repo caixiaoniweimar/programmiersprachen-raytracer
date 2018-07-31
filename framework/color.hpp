@@ -98,4 +98,5 @@ struct Color
 };
 
 
+
 #endif //#define BUW_COLOR_HPP
