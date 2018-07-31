@@ -19,13 +19,9 @@ public:
 		name_{name},
 		position_{position}, 
 		color_{color},
-		brightness_{brightness}{}
-		//isSchatten_{isSchatten} 
+		brightness_{brightness}{} 
 
 	~Light(){}
-	/*Color intersect(scene const& scene, intersectionResult& result){
-		//const float k=1e-4;
-	}*/
 	Color rechnen_intensitaet() const {
 		Color intensitaet {color_*brightness_} ;
 		return intensitaet;
@@ -35,13 +31,6 @@ public:
 	glm::vec3 position_;
 	Color color_;
 	float brightness_;
-	//bool isSchatten_;
-};
-/*struct Light{
-	string name{"default name fuer light"};
-	glm::vec3 position{0,0,0};
-	Color color{1,1,1};
-	float brightness =1;
 
-};*/
+};
 #endif
