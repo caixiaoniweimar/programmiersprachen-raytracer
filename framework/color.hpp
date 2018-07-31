@@ -92,6 +92,12 @@ struct Color
     return tmp;
   }
 
+  void check(){
+      r = r>1.0? 1.0:r;
+      g = g>1.0? 1.0:g;
+      b = b>1.0? 1.0:b;
+  }
+
   float r;
   float g;
   float b;
