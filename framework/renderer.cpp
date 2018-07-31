@@ -14,8 +14,7 @@ Renderer::Renderer(unsigned w, unsigned h, std::string const& file)
   , height_(h)
   , color_buffer_(w*h, Color(0.0, 0.0, 0.0))
   , filename_(file)
-  , ppm_(width_, height_)
-{}
+  , ppm_(width_, height_) {}
 
 void Renderer::render()
 {
@@ -51,6 +50,7 @@ void Renderer::write(Pixel const& p)
   ppm_.write(p);
 }
 
+// erste Probieren, funktioniert gut, kein Licht
 /*void Renderer::render1(Camera const& camera,Sphere const& sphere){
   for(unsigned y=0; y<height_; ++y){
      float sy= 1.0-y*1.0/height_;
@@ -75,31 +75,69 @@ void Renderer::write(Pixel const& p)
   ppm_.save(filename_);
 }*/
 
-void Renderer::render1(Camera const& camera,Material const& material, Sphere const& sphere, Color const& ambiente, Light const& light){
-  for(unsigned y=0; y<height_; ++y){
+// rechnen_diffuse_reflexion, benutzt nicht, nur deutliche Idee
+/*Color Renderer::rechnen_diffuse_reflexion(Light const& light, Ray const& ray, Material const& material, intersectionResult const& result, Color const& ambiente) const{
+        glm::vec3 L = glm::normalize(light.position_ - result.position);
+        glm::vec3 N = result.normal; //glm::vec3 N = sphere.getNormal(result.position);
+        float LNdot = glm::dot(L,N); // erlaubt klein 0?
+
+        glm::vec3 R = glm::normalize(2 * LNdot * N-L);
+        glm::vec3 V = glm::normalize( ray.origin - result.position );
+
+        float RVdot = glm::dot(R,V);
+
+        Color spiegeln = (material.ks) * (pow(std::max(RVdot,(float)0),material.exponente_m ));
+        Color diffuseColor = light.rechnen_intensitaet() * (material.kd) * std::max(glm::dot(L,N),(float)0);
+        Color reflexion = ambiente*(material.ka); 
+        return reflexion+diffuseColor+spiegeln;
+}*/
+
+void Renderer::render1(Scene const& scene){
+  for(unsigned y=0.0; y<height_; ++y){
      float sy= 1.0-y*1.0/height_;
-    for(unsigned x=0; x<width_; ++x){
+    for(unsigned x=0.0; x<width_; ++x){
 
       float sx= x*1.0/width_;
       Pixel p(x,y);
-      Ray ray= camera.erzeugen_ray(sx,sy);
+      Ray ray= scene.camera.erzeugen_ray(sx,sy);
       float t=2000;
-      intersectionResult result = sphere.istIntersect(ray,t);
-      if(result.hit==true){
-        p.color = {0,0,0};
-        p.color += sphere.rechnen_diffuse_reflexion(light,material,result,ambiente);
+      //intersectionResult result = sphere.istIntersect(ray,t);
+     // intersectionResult result = scene.Intersect(ray);
+
+      /*if(result.hit==true){
+        //p.color = rechnen_diffuse_reflexion(light,ray,material,result,ambiente);
+        //p.color.check();
         //cout<<L.r<<" "<<L.g<<" "<<L.b<<" "<<(float)glm::dot(L,N)<<" "<<N.r<<" "<<N.g<<" "<<N.b<<endl;
         //cout<<p.color.r<<" "<<p.color.g<<" "<<p.color.b<<endl;
         //cout<<N1.r<<" "<<N1.g<<" "<<N1.b<<endl;
 
+        //p.color = scene.intersect(light,result);
+        auto object = scene.container_objekt;
+        Color const& ambiente{0,0,0};
+        for( int i=0; i< object.size(); ++i ){
+             p.color = scene.viel_object_intersect(ray);
+        }
       }
       else{
         p.color = {0,0,0};
-      }
+      }*/
+        p.color = scene.viel_object_intersect(ray);
      write(p);
     }
   }
   ppm_.save(filename_);
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 

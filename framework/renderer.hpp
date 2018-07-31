@@ -22,10 +22,9 @@
 #include <glm/vec3.hpp>
 #include <glm/glm.hpp>
 #include <glm/gtx/intersect.hpp>
-#include "light.hpp"
 #include <iostream>
-#include "shape.hpp"
-#include "material.hpp"
+
+
 class Renderer
 {
 public:
@@ -34,8 +33,8 @@ public:
   void render();
   void write(Pixel const& p);
 
-  void render1(Camera const& camera,Sphere const& sphere);
-  void render1(Camera const& camera,Material const& material,Sphere const& sphere, Color const& ambiente,Light const& light);
+  void render1(Scene const& scene);
+  Color rechnen_diffuse_reflexion(Light const& light, Ray const& ray,Material const& material, intersectionResult const& result, Color const& ambiente) const;
   inline std::vector<Color> const& color_buffer() const
   {
     return color_buffer_;
