@@ -111,10 +111,13 @@ Scene open_sdf_datei(string const& filename){
                     light.position_.z<<" "<<light.color_.r<<" "<<light.color_.g<<" "
                     <<light.color_.b<<" "<<light.brightness_<<endl;
             }
-      if(differ_string=="camera"){ 
+      if(differ_string=="camera"){  //camera kein Problem
                 istrm>> (scene.camera).name_;
                 istrm>> (scene.camera).fov_x_;
-                cout<<" "<<(scene.camera).name_<<" "<<(scene.camera).fov_x_<<endl;     
+                cout<<" "<<(scene.camera).name_<<" "<<(scene.camera).fov_x_<<" "<<(scene.camera).eye_.x<<
+                " "<<(scene.camera).eye_.y<<" "<<(scene.camera).eye_.z<<" "<<(scene.camera).dir_.x<<
+                " "<<(scene.camera).dir_.y<<" "<<(scene.camera).dir_.z<<" "<<(scene.camera).up_.x<<" "
+                <<(scene.camera).up_.y<<" "<<(scene.camera).up_.z<<endl;     
         }   
 
       }
@@ -168,3 +171,7 @@ material_ptr set_find(string const& such_name, set< shared_ptr<Material> > set_m
      return nullptr;
   }
 }
+
+
+
+
