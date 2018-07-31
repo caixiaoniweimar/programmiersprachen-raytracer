@@ -62,34 +62,36 @@ struct Scene{
 
 	Color schatten(shared_ptr<Shape> const& objekt, Ray const& ray, float t) const{
 		intersectionResult schnittpunkt = objekt->istIntersect(ray,t);
-		
-		Color black{0,0,0};
-		Color resultColor = ambiente*( (objekt->material_)->ka);
+
+		Color resultColor{0,0,0};
+		Color amb = ambiente*( (objekt->material_)->ka);
 
         for( int i=0; i < container_light.size(); ++i ){
            Ray licht_ray{ schnittpunkt.position, container_light[i].position_ };
-              for( int j=0; j < container_objekt.size(); ++j ){
-              	intersectionResult licht_result = container_objekt[j]->istIntersect(licht_ray,t);
-            
-        	    if(licht_result.hit==false){
 
                 	glm::vec3 L = glm::normalize(container_light[i].position_ - schnittpunkt.position);
         			glm::vec3 N = schnittpunkt.normal; //glm::vec3 N = sphere.getNormal(result.position);
         			float LNdot = glm::dot(L,N); // erlaubt klein 0?
 
-       				glm::vec3 R = glm::normalize(2 * LNdot * N-L);
+        			glm::vec3 R = glm::normalize(2 * LNdot * N-L);
         			glm::vec3 V = glm::normalize( camera.eye_ - schnittpunkt.position );
-
         			float RVdot = glm::dot(R,V);
 
+              for( int j=0; j < container_objekt.size(); ++j ){
+              	intersectionResult licht_result = container_objekt[j]->istIntersect(licht_ray,t);
+            
+        	    if(licht_result.hit==false){
+
         			Color spiegeln = ( (objekt->material_)->ks) * (pow(std::max(RVdot,(float)0), (objekt->material_)->exponente_m ));
-        			Color diffuseColor = container_light[i].rechnen_intensitaet() * ( (objekt->material_)->kd) * std::max(glm::dot(L,N),(float)0);
-        			resultColor += spiegeln + diffuseColor;
+        			Color diffuseColor =  ( (objekt->material_)->kd) * std::max(glm::dot(L,N),(float)0 );
+        			resultColor += container_light[i].rechnen_intensitaet() * (spiegeln + diffuseColor);
+        			cout << container_light[i].rechnen_intensitaet()<<endl;
+
                 }
  
               }
         }
-		return resultColor;
+		return resultColor+amb;
 	}
 
 };

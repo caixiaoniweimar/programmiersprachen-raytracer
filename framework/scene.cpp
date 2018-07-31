@@ -119,7 +119,12 @@ Scene open_sdf_datei(string const& filename){
                 " "<<(scene.camera).dir_.y<<" "<<(scene.camera).dir_.z<<" "<<(scene.camera).up_.x<<" "
                 <<(scene.camera).up_.y<<" "<<(scene.camera).up_.z<<endl;     
         }   
-
+      }
+      if(differ_string=="ambient"){
+          istrm>>scene.ambiente.r;
+          istrm>>scene.ambiente.g;
+          istrm>>scene.ambiente.b;
+          cout<<"ambiente: "<<scene.ambiente.r<<" "<<scene.ambiente.g<<" "<<scene.ambiente.b<<endl;
       }
     }
   }

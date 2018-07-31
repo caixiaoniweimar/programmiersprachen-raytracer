@@ -25,11 +25,11 @@ int main(int argc, char* argv[])
   //create separate thread to see updates of pixels while rendering 创建单独的线程以在渲染时查看像素的更新
   //std::thread render_thread([&renderer]() {renderer.render();});
 
-  Material red{};
-  Sphere sphere1{glm::vec3{0,10,-10},5};
-  Light light{"sun",{50,-40,10},{1,1,1},1};
-  Camera camera{};
-  Color ambiente{0.0f,0.0f,0.0f};
+  //Material red{};
+  //Sphere sphere1{glm::vec3{0,10,-10},5};
+  //Light light{"sun",{50,-40,10},{1,1,1},1};
+  //Camera camera{};
+  //Color ambiente{0.0f,0.0f,0.0f};
   //Light light{"sun",{1,1,1},{1,1,1},10};
   //Sphere sphere1{glm::vec3{0,5,-10},5.0};
 

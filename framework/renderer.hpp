@@ -34,7 +34,7 @@ public:
   void write(Pixel const& p);
 
   void render1(Scene const& scene);
-  Color rechnen_diffuse_reflexion(Light const& light, Ray const& ray,Material const& material, intersectionResult const& result, Color const& ambiente) const;
+  //Color rechnen_diffuse_reflexion(Light const& light, Ray const& ray,Material const& material, intersectionResult const& result, Color const& ambiente) const;
   inline std::vector<Color> const& color_buffer() const
   {
     return color_buffer_;

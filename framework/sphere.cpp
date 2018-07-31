@@ -80,6 +80,7 @@ using namespace std;
     			result.distance = t;
     			result.position=ray.getpoint(result.distance);
     			result.normal = glm::normalize(result.position - mittelpunkt_);
+    			//cout<<"benutzt Sphere istIntersect"<<endl;
     		}
     	return result;
     }
