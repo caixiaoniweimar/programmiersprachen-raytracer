@@ -6,6 +6,7 @@
 #include "color.hpp"
 #include "ray.hpp"
 #include "material.hpp"
+#include "intersection_Result.hpp"
 using namespace std;    
   
 class Shape{
@@ -28,6 +29,7 @@ public:
 
 // Aufgabe 6.3
 		virtual bool intersect (Ray const& ray, float& t) const=0;
+		virtual intersectionResult istIntersect(Ray const& ray,float& t) const=0;
 
 		void set_name(string const& name);
 		string get_name() const;
@@ -35,7 +37,6 @@ public:
 // Aufgabe 5.3
 // abgleiteted Klasse wird diese Attribute aufrufen( vererben diese Attribute als private )
 		string name_;
-		//Color color_;
 // Aufgabe 6.4
 
 		shared_ptr<Material> material_;

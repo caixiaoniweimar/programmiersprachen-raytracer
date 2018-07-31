@@ -41,3 +41,4 @@ ostream& operator<<(ostream& os,Shape const& s){
 	return ostream_sentry ? s.print(os) : os;
 }
 
+
