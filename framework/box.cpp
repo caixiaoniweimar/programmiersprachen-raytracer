@@ -130,6 +130,10 @@ bool Box::intersect (Ray const& ray, float& t) const{
 return result;
 }
 
+intersectionResult Box::istIntersect(Ray const& ray,float& t) const{
+	return intersectionResult{};
+}
+
 
 
 

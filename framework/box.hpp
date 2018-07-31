@@ -24,6 +24,8 @@ public:
 
 // Aufgabe 5.5
 	ostream& print(ostream& os) const override;
+	intersectionResult istIntersect(Ray const& ray,float& t) const override;
+
 
 // Aufgabe 6.3
 	bool intersect (Ray const& ray, float& t) const override;
