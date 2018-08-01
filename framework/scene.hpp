@@ -19,6 +19,7 @@ using namespace std;
 #include "camera.hpp"
 #include "intersection_Result.hpp"
 #include "ray.hpp"
+#include "composite.hpp"
 
 
 using material_ptr = std::shared_ptr<Material>;
@@ -30,11 +31,14 @@ struct Scene{
 
 // Aufgabe 7.2
 	vector<shared_ptr<Shape>> container_objekt;
+    // speichert Objekt im Composite
+    shared_ptr<Composite> root;
+
 	vector<Light> container_light;
 	Camera camera{};
 
 	Color ambiente{0.0f,0.0f,0.0f}; 
-
+    /*
 	Color viel_object_intersect(Ray const& ray) const{
 		float minDistance = 100;
 		intersectionResult minResult = intersectionResult{};
@@ -53,21 +57,22 @@ struct Scene{
 			}
 		}
 		if(min_object_index != -1){  // index unmoeglich gleich -1 !!! das heisst, nie zurueck ambiente
-			return schatten( container_objekt[min_object_index], ray, minDistance ); 
+			return faerben( container_objekt[min_object_index], ray, minDistance ); 
 		}
 		else{
 			return ambiente; // ambiente
 		}
-	}
+	}*/
 
-	Color schatten(shared_ptr<Shape> const& objekt, Ray const& ray, float t) const{
+	/*Color faerben(shared_ptr<Shape> const& objekt, Ray const& ray, float t) const{
 		intersectionResult schnittpunkt = objekt->istIntersect(ray,t);
 
 		Color resultColor{0,0,0};
-		Color amb = ambiente*( (objekt->material_)->ka);
 
         for( int i=0; i < container_light.size(); ++i ){
-           Ray licht_ray{ schnittpunkt.position, container_light[i].position_ };
+        	// vorher:Ray licht_ray{ schnittpunkt.position, schnittpunkt.position} direction gibt es Fehler!!!
+           Ray licht_ray{ schnittpunkt.position, container_light[i].position_ - schnittpunkt.position}; 
+           Color amb = container_light[i].color_ *( (objekt->material_)->ka);
 
                 	glm::vec3 L = glm::normalize(container_light[i].position_ - schnittpunkt.position);
         			glm::vec3 N = schnittpunkt.normal; //glm::vec3 N = sphere.getNormal(result.position);
@@ -92,7 +97,7 @@ struct Scene{
               }
         }
 		return resultColor+amb;
-	}
+	}*/
 
 };
 // Aufgabe 6.5
@@ -100,6 +105,8 @@ Scene open_sdf_datei(string const& filename);
 
 // Aufgabe 6.5 find_vector
 material_ptr vector_find(string const& such_name, vector<material_ptr> vector_material);
+
+shared_ptr<Shape> shape_vector_find( string const& such_name, vector<shared_ptr<Shape>> container_objekt ); 
 
 material_ptr map_find(string const& such_name, map< string, shared_ptr<Material> > map_material);
 
