@@ -6,6 +6,9 @@ Shape::Shape():
 	material_{} {
 	//std::cout << "Hier benutze ich den Konstruktor von Shape!\n";
 	}
+Shape::Shape(string const& name):
+	name_{name},
+	material_{} {}
 
 //Shape::Shape(string const& name, Color const& color):
 Shape::Shape(string const& name, shared_ptr<Material> const& material):	

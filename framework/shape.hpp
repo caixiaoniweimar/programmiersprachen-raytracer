@@ -14,6 +14,7 @@ public:
 // Aufgabe 5.3
 		Shape();
 		//Shape(string const& name, Color const& color);
+		Shape(string const& name);
 		Shape(string const& name, shared_ptr<Material> const& material);
 		virtual ~Shape();
 	    //~Shape();
