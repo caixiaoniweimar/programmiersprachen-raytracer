@@ -54,9 +54,7 @@ Scene open_sdf_datei(string const& filename){
               if(differ_string=="box"){
                 auto box_objekt = make_shared<Box>(); // shared_ptr<Box>
           
-                box_objekt->set_name(differ_string);
-                string name_box=box_objekt->get_name();
-                istrm>> name_box;
+                istrm>> box_objekt->name_;
 
                 istrm>> (box_objekt->minimum_).x;
                 istrm>> (box_objekt->minimum_).y;
@@ -77,9 +75,7 @@ Scene open_sdf_datei(string const& filename){
              if(differ_string=="sphere"){
                 auto sphere_objekt = make_shared<Sphere>();
 
-                sphere_objekt->set_name(differ_string);
-                string name_sphere=sphere_objekt->get_name();
-                istrm>> name_sphere;
+                istrm>> sphere_objekt->name_;
 
                 istrm>> (sphere_objekt->mittelpunkt_).x;
                 istrm>> (sphere_objekt->mittelpunkt_).y;
@@ -95,6 +91,35 @@ Scene open_sdf_datei(string const& filename){
                
                // (scene.composite_objekt).add(sphere_objekt);
               }
+              if(differ_string=="composite"){
+
+                //string composite_name;
+                //istrm>> composite_name;
+                //auto composite = make_shared<Composite>(composite_name);
+                auto composite = make_shared<Composite>();
+                istrm>> composite->name_;
+
+                int size =scene.container_objekt.size();
+          
+                while( istrm>> differ_string ){
+                    shared_ptr<Shape> shape = shape_vector_find( differ_string, scene.container_objekt );
+                if( size !=0 ){
+                    composite->add(shape);
+                    size--;
+                }
+               }
+                scene.root = composite;
+                cout<<scene.root->name_;
+
+                int size2 = scene.root->composite_.size();
+                for( int i=0; i< size2; ++i ){
+                  shared_ptr<Shape> knoten = scene.root->composite_[i];
+                  auto name = (*knoten).name_;
+                  cout<<" "<<name;
+                }
+                cout<<endl;
+              } 
+
              }
       if(differ_string=="light"){
                 Light light{};
@@ -118,7 +143,7 @@ Scene open_sdf_datei(string const& filename){
                 " "<<(scene.camera).eye_.y<<" "<<(scene.camera).eye_.z<<" "<<(scene.camera).dir_.x<<
                 " "<<(scene.camera).dir_.y<<" "<<(scene.camera).dir_.z<<" "<<(scene.camera).up_.x<<" "
                 <<(scene.camera).up_.y<<" "<<(scene.camera).up_.z<<endl;     
-        }   
+        }  
       }
       if(differ_string=="ambient"){
           istrm>>scene.ambiente.r;
@@ -126,10 +151,22 @@ Scene open_sdf_datei(string const& filename){
           istrm>>scene.ambiente.b;
           cout<<"ambiente: "<<scene.ambiente.r<<" "<<scene.ambiente.g<<" "<<scene.ambiente.b<<endl;
       }
+
     }
   }
 inf.close();
 return scene;
+}
+
+shared_ptr<Shape> shape_vector_find( string const& such_name, vector<shared_ptr<Shape>> container_objekt ){
+  auto t = find_if(container_objekt.begin(), container_objekt.end(), 
+            [&such_name](shared_ptr<Shape> const& m){ return (m->name_)==such_name; } );
+  if( t!=container_objekt.end() ){
+    return *t;
+  }
+  else{
+    return nullptr;
+  }
 }
 
 // Aufgabe 6.5 Find-Methode fuer vector!!!!!
