@@ -16,7 +16,8 @@ Renderer::Renderer(unsigned w, unsigned h, std::string const& file)
   , filename_(file)
   , ppm_(width_, height_) {}
 
-void Renderer::render()
+// Beispiel render()
+/*void Renderer::render()
 {
   std::size_t const checker_pattern_size = 20;
 
@@ -32,7 +33,7 @@ void Renderer::render()
     }
   }
   ppm_.save(filename_);
-}
+}*/
 
 void Renderer::write(Pixel const& p)
 {
@@ -92,42 +93,118 @@ void Renderer::write(Pixel const& p)
         return reflexion+diffuseColor+spiegeln;
 }*/
 
-void Renderer::render1(Scene const& scene){
+void Renderer::render(Scene const& scene){
   for(unsigned y=0.0; y<height_; ++y){
-     float sy= 1.0-y*1.0/height_;
+      // float sy= 1.0-y*1.0/height_;       erste CameraModell, aber failed
     for(unsigned x=0.0; x<width_; ++x){
 
-      float sx= x*1.0/width_;
+      //float sx= x*1.0/width_;
       Pixel p(x,y);
-      Ray ray= scene.camera.erzeugen_ray(sx,sy);
-      float t=2000;
-      //intersectionResult result = sphere.istIntersect(ray,t);
-     // intersectionResult result = scene.Intersect(ray);
-
-      /*if(result.hit==true){
-        //p.color = rechnen_diffuse_reflexion(light,ray,material,result,ambiente);
-        //p.color.check();
-        //cout<<L.r<<" "<<L.g<<" "<<L.b<<" "<<(float)glm::dot(L,N)<<" "<<N.r<<" "<<N.g<<" "<<N.b<<endl;
-        //cout<<p.color.r<<" "<<p.color.g<<" "<<p.color.b<<endl;
-        //cout<<N1.r<<" "<<N1.g<<" "<<N1.b<<endl;
-
-        //p.color = scene.intersect(light,result);
-        auto object = scene.container_objekt;
-        Color const& ambiente{0,0,0};
-        for( int i=0; i< object.size(); ++i ){
-             p.color = scene.viel_object_intersect(ray);
-        }
-      }
-      else{
-        p.color = {0,0,0};
-      }*/
-        p.color = scene.viel_object_intersect(ray);
-     write(p);
+      Ray ray= scene.camera.erzeugen_ray(x,y,height_,width_);
+      p.color = viel_object(scene,ray); // bestimmt depth
+      write(p);
     }
   }
   ppm_.save(filename_);
 }
 
+Color Renderer::raytrace( shared_ptr<Shape> const& objekt, Scene const& scene, Ray const& ray, unsigned depth) const{
+  Color result_Color{0,0,0};
+  float t=1000;
+  intersectionResult schnittpunkt = (scene.root)->istIntersect(ray,t);
+
+  Color amb = (scene.ambiente)*(objekt->material_->ka); // amb nur einmal!
+
+  if( schnittpunkt.hit ==true ){
+    // rechnen Diffuse 
+        for( int i=0; i< scene.container_light.size(); ++i ){
+          Ray light_ray{ schnittpunkt.position, scene.container_light[i].position_ - schnittpunkt.position };
+
+          light_ray.origin += light_ray.direction*(float)0.001; // no intersect with self
+
+          // glm::vec3 L = light_ray.direction;
+          glm::vec3 L = glm::normalize(scene.container_light[i].position_ - schnittpunkt.position);
+          glm::vec3 N = schnittpunkt.normal;
+          float LNdot = glm::dot(L,N);
+
+          // here Objekt ist closet!!!!
+
+          //wenn nicht erfolgreich, dann probieren scene.root oder scene.container_objekt
+          intersectionResult ob_andere_objekt = scene.root->istIntersect(light_ray,t);
+          float light_position_x = scene.container_light[i].position_.x;
+          float lightray_origin_x = light_ray.origin.x;
+          float lightray_direction_x = light_ray.direction.x;
+
+          float lightray_distance1 = glm::distance( scene.container_light[i].position_ , light_ray.origin );
+          float lightray_distance = ( (light_position_x - lightray_origin_x)/ lightray_direction_x  );
+
+          if(lightray_distance1==lightray_distance){
+            cout<<"Ich habe richtig verstanden."<<endl;
+          }
+
+          // kein Schatten!!
+          if( !ob_andere_objekt.hit || ob_andere_objekt.distance > lightray_distance ) {
+            result_Color += ( scene.container_light[i].rechnen_intensitaet() )*
+                ( objekt->material_->kd ) * max( LNdot,0.0f );
+
+              glm::vec3 R = glm::normalize(2 * LNdot * N-L);
+              glm::vec3 V = -ray.direction;
+              glm::vec3 V1 = glm::normalize( scene.camera.eye_ - schnittpunkt.position );
+              // gucken, welche richtig ist
+              if( V.x == V1.x && V.y == V1.y && V.z == V1.z ){
+                cout<<"Ich habe richtig verstanden 2."<<endl;
+              }
+              float RVdot = glm::dot(R,V);
+
+              result_Color += ( scene.container_light[i].rechnen_intensitaet() )*
+              pow( max(RVdot,0.0f), (objekt->material_)->exponente_m );
+          }
+        }
+// reflektion von andere Objekte!!!!!!!!!
+    Color ks_wert = objekt->material_->ks;
+    if( depth>0 ){
+      glm::vec3 V = ray.direction; // schnittpunkt.position - cam.eye
+      glm::vec3 N = schnittpunkt.normal;
+      float VNdot = glm::dot(N,V);
+      glm::vec3 R = glm::normalize( V-2*VNdot*N );
+
+      Ray reflektion_Ray{ schnittpunkt.position, R };
+      reflektion_Ray.origin += reflektion_Ray.direction*(float)0.001;
+      Color reflektion_Color = raytrace(objekt, scene, reflektion_Ray, depth-1);
+    }
+      result_Color+=amb;
+  }
+  else{
+      result_Color=amb;
+  }
+  return result_Color;
+}
+//reflection反射,倒影 refraction折射
+
+Color Renderer::viel_object(Scene const& scene, Ray const& ray) const{
+    float minDistance = 100;
+    intersectionResult minResult = intersectionResult{};
+    int size = scene.container_objekt.size();
+
+    int min_object_index= -1;
+           
+    // for all object 
+    for( int i=0; i<size; ++i ){
+      float t = 2000;
+      intersectionResult result = scene.container_objekt[i]->istIntersect(ray,t); // result.hit 0/1; result.t auch change; beidem funktionieren
+
+      if( result.hit==true  &&(result.distance < minDistance) ){ // hit=1
+        minDistance = result.distance;
+        min_object_index=i;
+      }
+    }
+    if(min_object_index != -1){  // index unmoeglich gleich -1 !!! das heisst, nie zurueck ambiente
+      return raytrace(scene.container_objekt[min_object_index],scene,ray,3); 
+    }
+    else{
+      return scene.ambiente; // ambiente
+    }
+}
 
 
 
