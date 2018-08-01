@@ -30,11 +30,13 @@ class Renderer
 public:
   Renderer(unsigned w, unsigned h, std::string const& file);
 
-  void render();
+  //void render();
   void write(Pixel const& p);
 
-  void render1(Scene const& scene);
+  void render(Scene const& scene);
   //Color rechnen_diffuse_reflexion(Light const& light, Ray const& ray,Material const& material, intersectionResult const& result, Color const& ambiente) const;
+  Color raytrace(shared_ptr<Shape> const& objekt, Scene const& scene, Ray const& ray, unsigned depth) const;
+  Color viel_object(Scene const& scene, Ray const& ray) const;
   inline std::vector<Color> const& color_buffer() const
   {
     return color_buffer_;
