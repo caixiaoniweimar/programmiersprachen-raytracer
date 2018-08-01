@@ -98,9 +98,9 @@ struct Color
       b = b>1.0? 1.0:b;
   }
 
-  float r;
-  float g;
-  float b;
+  float r=0.0;
+  float g=0.0;
+  float b=0.0;
 };
 
 
