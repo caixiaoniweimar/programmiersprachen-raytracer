@@ -13,8 +13,8 @@ class Camera{
 public:
 	Camera():
 		name_{"default name duer Camera"},
-		fov_x_{90},
-		eye_{0,10,10},
+		fov_x_{45}, // 45?
+		eye_{0,0,0}, // origin / 0,10,10
 		dir_{0,0,-1},
 		up_{0,1,0} {}
 	Camera(string const& name, float fov_x, glm::vec3 eye, glm::vec3 dir, glm::vec3 up ):
@@ -23,7 +23,9 @@ public:
 		eye_{eye},
 		dir_{dir},
 		up_{up} {}
-	Ray erzeugen_ray(float x, float y) const{
+
+	// nicht so gut Algorithmus fuer CameraModell, erste Mal Probe
+	/*Ray erzeugen_ray(float x, float y) const{
 		glm::vec3 right=glm::cross(dir_,up_); //垂直矢量
 		glm::vec3 up=glm::cross(right,dir_); 
 		float fovBereich=tan(fov_x_*(M_PI*0.5f/180))*2;
@@ -31,6 +33,12 @@ public:
 		glm::vec3 u=up*( (y-0.5f)*fovBereich );
 		glm::vec3 tmp=dir_+r+u;
 		return Ray{eye_,glm::normalize(tmp)};
+	}*/
+
+	Ray erzeugen_ray(float x,float y, float height, float width) const{
+		glm::vec3 direction{ x*(1.0/width)-0.5, y*(1.0/height)-0.5, 
+			    -1.0*(0.5/tan(fov_x_*M_PI/360)) };
+	    return Ray{eye_,direction};
 	}
 public:
 	string name_;
