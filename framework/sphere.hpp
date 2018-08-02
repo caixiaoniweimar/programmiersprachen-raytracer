@@ -5,12 +5,8 @@
 #include <glm/gtx/intersect.hpp>     
 #include "shape.hpp"
 #include <string>
-#include "color.hpp"
-#include "ray.hpp"
 #include "material.hpp"
-#include "intersection_Result.hpp"
-#include "light.hpp"
-#include "camera.hpp"
+
 using namespace std;
 // Mittelpunkt und einen Radius
 // Konstruktor; get-Methoden; Methoden area und volume
@@ -26,8 +22,8 @@ public:
 	Sphere(string const& name, shared_ptr<Material> const& material, glm::vec3 const& mittelpunkt, double radius);
 	~Sphere();
 
-	double area() const override;		// area(),volume() 在hpp写override, 在cpp不需要
-	double volume() const override;
+	//double area() const override;		// area(),volume() 在hpp写override, 在cpp不需要
+	//double volume() const override;
 
 	glm::vec3 get_mittelpunkt() const; // get_Methode() 为const
 	double get_radius() const;
@@ -40,14 +36,10 @@ public:
 // Aufgabe 5.6
 	bool intersect (Ray const& ray, float& t) const override;
 	intersectionResult istIntersect(Ray const& ray,float& t) const override;
-
-	glm::vec3 getNormal(glm::vec3 schnittpunkt) const;
+	glm::vec3 getNormal(intersectionResult const& schnittpunkt) const override;
 
 	glm::vec3 mittelpunkt_;
 	double radius_;
 
-};
-
-
-	
+};	
 #endif

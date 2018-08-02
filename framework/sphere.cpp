@@ -28,14 +28,14 @@ using namespace std;
 	Sphere::~Sphere(){//cout<<"Hier benutze ich Destruktor von Sphere namens: " << name_ << "!"<<endl;
 	}  
 
-	double Sphere::area() const {
+	/*double Sphere::area() const {
 		//std::cout << name_;
 		return 4*M_PI*radius_*radius_;
 	}
 
 	double Sphere::volume() const {
 		return (4.0/3.0) * M_PI * radius_ * radius_ * radius_;
-	}
+	}*/
 
 	glm::vec3 Sphere::get_mittelpunkt() const{
 		return mittelpunkt_;
@@ -66,47 +66,27 @@ using namespace std;
 	// Mit reference veraedert die Variable ausserhalb 
 	// Mit per value veraedert die Variable nur innerhalb der Methode 
 
-    glm::vec3 Sphere::getNormal(glm::vec3 schnittpunkt) const{
-    	return glm::vec3{ (schnittpunkt - mittelpunkt_)/((float)radius_)};
+    glm::vec3 Sphere::getNormal(intersectionResult const& schnittpunkt) const{
+    	return glm::normalize( glm::vec3{(schnittpunkt.position - mittelpunkt_)} );
     }
-
     // getNormal Methode gleich wie result.normal!!!
 
-    intersectionResult Sphere::istIntersect(Ray const& ray,float& t) const{
+    // 之后考虑新Ray, transformRay
+   intersectionResult Sphere::istIntersect(Ray const& ray,float& t) const{
     	intersectionResult result{};
+// Theresa SDF Datei intersect funktioniert
     	if(intersect(ray,t)==true)
     		{	
     			result.hit=true;
     			result.distance = t;
     			result.position=ray.getpoint(result.distance);
     			result.normal = glm::normalize(result.position - mittelpunkt_);
+				result.closest_shape=this;
+				//cout<<"Sphere"<<endl;   
     		}
     	return result;
     }
 
-    /*Color Sphere::rechnen_diffuse_reflexion(Light const& light, Material const& material, intersectionResult const& result, Color const& ambiente) const{
-        glm::vec3 L = glm::normalize(light.position_ - result.position);
-        glm::vec3 N = result.normal; //glm::vec3 N = sphere.getNormal(result.position);
-        Color diffuseColor = light.rechnen_intensitaet() * (material.kd) * std::max(glm::dot(L,N),(float)0);
-        Color reflexion = diffuseColor + ambiente*(material.ka); 
-        return reflexion+diffuseColor;
-    }*/
-
-    /*Color Sphere::rechnen_diffuse_reflexion(Light const& light, Camera const& camera, Material const& material, intersectionResult const& result, Color const& ambiente) const{
-        glm::vec3 L = glm::normalize(light.position_ - result.position);
-        glm::vec3 N = result.normal; //glm::vec3 N = sphere.getNormal(result.position);
-        float LNdot = glm::dot(L,N); // erlaubt klein 0?
-
-        glm::vec3 R = glm::normalize(2 * LNdot * N-L);
-        glm::vec3 V = glm::normalize( camera.eye_ - result.position );
-
-        float RVdot = glm::dot(R,V);
-
-        Color spiegeln = (material.ks) * (pow(std::max(RVdot,(float)0),material.exponente_m ));
-        Color diffuseColor = light.rechnen_intensitaet() * (material.kd) * std::max(glm::dot(L,N),(float)0);
-        Color reflexion = ambiente*(material.ka); 
-        return reflexion+diffuseColor+spiegeln;
-    }*/
    
 
 
