@@ -9,8 +9,9 @@
 
 #include "renderer.hpp"
 
-Renderer::Renderer(unsigned w, unsigned h, std::string const& file)
-  : width_(w)
+Renderer::Renderer(Scene const& scene, unsigned w, unsigned h, std::string const& file)
+  : scene(scene)
+  , width_(w)
   , height_(h)
   , color_buffer_(w*h, Color(0.0, 0.0, 0.0))
   , filename_(file)
@@ -76,77 +77,58 @@ void Renderer::write(Pixel const& p)
   ppm_.save(filename_);
 }*/
 
-// rechnen_diffuse_reflexion, benutzt nicht, nur deutliche Idee
-/*Color Renderer::rechnen_diffuse_reflexion(Light const& light, Ray const& ray, Material const& material, intersectionResult const& result, Color const& ambiente) const{
-        glm::vec3 L = glm::normalize(light.position_ - result.position);
-        glm::vec3 N = result.normal; //glm::vec3 N = sphere.getNormal(result.position);
-        float LNdot = glm::dot(L,N); // erlaubt klein 0?
-
-        glm::vec3 R = glm::normalize(2 * LNdot * N-L);
-        glm::vec3 V = glm::normalize( ray.origin - result.position );
-
-        float RVdot = glm::dot(R,V);
-
-        Color spiegeln = (material.ks) * (pow(std::max(RVdot,(float)0),material.exponente_m ));
-        Color diffuseColor = light.rechnen_intensitaet() * (material.kd) * std::max(glm::dot(L,N),(float)0);
-        Color reflexion = ambiente*(material.ka); 
-        return reflexion+diffuseColor+spiegeln;
-}*/
-
-void Renderer::render(Scene const& scene){
+void Renderer::render(){
   for(unsigned y=0.0; y<height_; ++y){
       // float sy= 1.0-y*1.0/height_;       erste CameraModell, aber failed
     for(unsigned x=0.0; x<width_; ++x){
-
       //float sx= x*1.0/width_;
       Pixel p(x,y);
-      Ray ray= scene.camera.erzeugen_ray(x,y,height_,width_);
-      p.color = viel_object(scene,ray); // bestimmt depth
+      Ray ray= scene.camera.erzeugen_ray(x,y,width_,height_);
+      p.color = raytrace(ray,3); // bestimmt depth
       write(p);
     }
   }
   ppm_.save(filename_);
 }
 
-Color Renderer::raytrace( shared_ptr<Shape> const& objekt, Scene const& scene, Ray const& ray, unsigned depth) const{
+Color Renderer::raytrace(Ray const& ray, unsigned depth) const{
   Color result_Color{0,0,0};
-  float t=1000;
+  float t=2000;
   intersectionResult schnittpunkt = (scene.root)->istIntersect(ray,t);
-
-  Color amb = (scene.ambiente)*(objekt->material_->ka); // amb nur einmal!
-
+  
+  Color amb{0,0,0};
   if( schnittpunkt.hit ==true ){
     // rechnen Diffuse 
+        amb += (scene.ambiente)*(schnittpunkt.closest_shape->material_->ka);
         for( int i=0; i< scene.container_light.size(); ++i ){
-          Ray light_ray{ schnittpunkt.position, scene.container_light[i].position_ - schnittpunkt.position };
 
+          Ray light_ray{ schnittpunkt.position, glm::normalize(scene.container_light[i].position_ - schnittpunkt.position) };
           light_ray.origin += light_ray.direction*(float)0.001; // no intersect with self
 
-          // glm::vec3 L = light_ray.direction;
-          glm::vec3 L = glm::normalize(scene.container_light[i].position_ - schnittpunkt.position);
+          glm::vec3 L = light_ray.direction;
+          //glm::vec3 L1 = glm::normalize(scene.container_light[i].position_ - schnittpunkt.position);
           glm::vec3 N = schnittpunkt.normal;
           float LNdot = glm::dot(L,N);
-
-          // here Objekt ist closet!!!!
+// ???????????????????
+           //result_Color += (scene.container_light[i].color_) * (schnittpunkt.closest_shape->material_->ka);
 
           //wenn nicht erfolgreich, dann probieren scene.root oder scene.container_objekt
           intersectionResult ob_andere_objekt = scene.root->istIntersect(light_ray,t);
+
           float light_position_x = scene.container_light[i].position_.x;
           float lightray_origin_x = light_ray.origin.x;
           float lightray_direction_x = light_ray.direction.x;
 
+          // Theresa change 2, grosse Unterschied!!!
           float lightray_distance1 = glm::distance( scene.container_light[i].position_ , light_ray.origin );
           float lightray_distance = ( (light_position_x - lightray_origin_x)/ lightray_direction_x  );
 
           if(lightray_distance1==lightray_distance){
             cout<<"Ich habe richtig verstanden."<<endl;
           }
-
           // kein Schatten!!
-          if( !ob_andere_objekt.hit || ob_andere_objekt.distance > lightray_distance ) {
-            result_Color += ( scene.container_light[i].rechnen_intensitaet() )*
-                ( objekt->material_->kd ) * max( LNdot,0.0f );
-
+          /*if( !ob_andere_objekt.hit || ob_andere_objekt.distance > lightray_distance ) {
+            result_Color += ( scene.container_light[i].rechnen_intensitaet() )*( schnittpunkt.closest_shape->material_->kd ) * max( LNdot,0.0f );
               glm::vec3 R = glm::normalize(2 * LNdot * N-L);
               glm::vec3 V = -ray.direction;
               glm::vec3 V1 = glm::normalize( scene.camera.eye_ - schnittpunkt.position );
@@ -156,13 +138,28 @@ Color Renderer::raytrace( shared_ptr<Shape> const& objekt, Scene const& scene, R
               }
               float RVdot = glm::dot(R,V);
 
-              result_Color += ( scene.container_light[i].rechnen_intensitaet() )*
-              pow( max(RVdot,0.0f), (objekt->material_)->exponente_m );
+              result_Color += ( scene.container_light[i].rechnen_intensitaet() )* (schnittpunkt.closest_shape->material_->ks)*
+                              pow( max(RVdot,0.0f), (schnittpunkt.closest_shape->material_)->exponente_m );
+          }*/
+          float p=0.0;
+          if(ob_andere_objekt.hit == false){
+            p=-1.0;
           }
+          glm::vec3 R = glm::normalize(2 * LNdot * N-L);
+          glm::vec3 V = -ray.direction;
+          float RVdot = glm::dot(R,V);
+          float RVdot_max = max(RVdot,0.0f);
+          Color color = (schnittpunkt.closest_shape->material_->ks)*pow( RVdot_max, (schnittpunkt.closest_shape->material_)->exponente_m );
+
+          Color color2 = (schnittpunkt.closest_shape->material_->kd) * max(LNdot,0.0f);
+          Color end = scene.container_light[i].rechnen_intensitaet()*(color+color2)*p;
+          //result_Color += ( scene.container_light[i].rechnen_intensitaet() )* (schnittpunkt.closest_shape->material_->ks)*
+          //                    pow( max(RVdot,0.0f), (schnittpunkt.closest_shape->material_)->exponente_m );
+          result_Color += end;
         }
 // reflektion von andere Objekte!!!!!!!!!
-    Color ks_wert = objekt->material_->ks;
-    if( depth>0 ){
+    Color ks_wert = schnittpunkt.closest_shape->material_->ks;
+    if( depth>100 ){
       glm::vec3 V = ray.direction; // schnittpunkt.position - cam.eye
       glm::vec3 N = schnittpunkt.normal;
       float VNdot = glm::dot(N,V);
@@ -170,41 +167,47 @@ Color Renderer::raytrace( shared_ptr<Shape> const& objekt, Scene const& scene, R
 
       Ray reflektion_Ray{ schnittpunkt.position, R };
       reflektion_Ray.origin += reflektion_Ray.direction*(float)0.001;
-      Color reflektion_Color = raytrace(objekt, scene, reflektion_Ray, depth-1);
+      Color reflektion_Color = raytrace(reflektion_Ray, depth-1);
+
+    bool ob_refraction = schnittpunkt.closest_shape->material_->refraction;
+    Color refra_Color{0,0,0};
+    if(ob_refraction && depth>0){
+      float q;
+      float refrac_index = schnittpunkt.closest_shape->material_->refraction_index;
+      float VNdot1 = glm::dot(N,V);
+      if(VNdot1 <0){
+        VNdot1 = -VNdot1;
+        q=1/refrac_index;
+      }
+      else{
+        q=refrac_index;
+        N=-N;
+      }
+      float VNdot2 = 1-q*q*(1-VNdot1*VNdot1);
+      if(VNdot2>0){
+        VNdot2 = sqrt(VNdot2);
+      }
+      else{
+        VNdot2 = 0;
+      }
+      glm::vec3 T = glm::normalize( q*V+(q*VNdot1-VNdot2)*N );
+
+      Ray refraction_ray{ schnittpunkt.position, T };
+      refraction_ray.origin += refraction_ray.direction*(float)0.001;
+
+      refra_Color = raytrace(refraction_ray,depth-1);
     }
-      result_Color+=amb;
+      result_Color+=(reflektion_Color)*(ks_wert)*0.3+(refra_Color);
+    }
+    result_Color+=amb;
   }
   else{
-      result_Color=amb;
+    result_Color = scene.ambiente;
   }
   return result_Color;
 }
 //reflection反射,倒影 refraction折射
 
-Color Renderer::viel_object(Scene const& scene, Ray const& ray) const{
-    float minDistance = 100;
-    intersectionResult minResult = intersectionResult{};
-    int size = scene.container_objekt.size();
-
-    int min_object_index= -1;
-           
-    // for all object 
-    for( int i=0; i<size; ++i ){
-      float t = 2000;
-      intersectionResult result = scene.container_objekt[i]->istIntersect(ray,t); // result.hit 0/1; result.t auch change; beidem funktionieren
-
-      if( result.hit==true  &&(result.distance < minDistance) ){ // hit=1
-        minDistance = result.distance;
-        min_object_index=i;
-      }
-    }
-    if(min_object_index != -1){  // index unmoeglich gleich -1 !!! das heisst, nie zurueck ambiente
-      return raytrace(scene.container_objekt[min_object_index],scene,ray,3); 
-    }
-    else{
-      return scene.ambiente; // ambiente
-    }
-}
 
 
 
