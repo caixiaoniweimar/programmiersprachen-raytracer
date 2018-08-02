@@ -14,6 +14,8 @@ struct Material{
 	Color ka;
 	Color kd;
 	Color ks;
+  bool refraction;
+  float refraction_index;
 	float exponente_m;
 
   Material():
@@ -21,13 +23,18 @@ struct Material{
     ka{1,0,0}, // reflexion->ambiente Beleuchtung
     kd{1,0,0}, //red diffuse -> einfache Beleuchtungsmodell
     ks{1,1,1}, //white Spiegeln
+    refraction{0},
+    refraction_index{1.0},
     exponente_m{16.0f} {}
 
-  Material(string const& name_, Color const& ka_, Color const& kd_, Color const& ks_, float exponente_m_ ):
+  Material(string const& name_, Color const& ka_, Color const& kd_, Color const& ks_, 
+           bool refraction_, float refraction_index, float exponente_m_ ):
     name{name_},
     ka{ka_},
     kd{kd_},
     ks{ks_},
+    refraction{refraction_},
+    refraction_index{refraction_index},
     exponente_m{exponente_m_} {}
   
 
