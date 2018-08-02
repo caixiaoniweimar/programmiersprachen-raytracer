@@ -1,7 +1,4 @@
 #include "box.hpp"
-#include <glm/vec3.hpp>
-#include <glm/glm.hpp>
-#include <glm/gtx/intersect.hpp>
 using namespace std;
 // Aufgabe 5.2
 Box::Box():
@@ -22,7 +19,7 @@ Box::Box(string const& name, shared_ptr<Material> const& material, glm::vec3 con
 
 Box::~Box() {}   
 	
-	double Box::area() const{     
+	/*double Box::area() const{     
 		double length= maximum_.x - minimum_.x;
 		double height= maximum_.y - minimum_.y;
 		double width= maximum_.z - minimum_.z;
@@ -34,7 +31,7 @@ Box::~Box() {}
 		double height= maximum_.y - minimum_.y;
 		double width= maximum_.z - minimum_.z;
 		return length*height*width;
-	}
+	}*/
 
 	glm::vec3 Box::get_min() const{
 		return minimum_;
@@ -50,6 +47,10 @@ Box::~Box() {}
 		os<<" Maximum: "<<"( "<< maximum_.x<<","<<maximum_.y<<","<<maximum_.z<<" )"
 		<<" Minimum: "<<"( "<<minimum_.x<<","<<minimum_.y<<","<<minimum_.z<<" )";
 		return os;
+	}
+
+	shared_ptr<Material> Box::get_Material() const {
+		return material_;
 	}
 
 // Aufgabe 6.3
@@ -129,10 +130,49 @@ bool Box::intersect (Ray const& ray, float& t) const{
 	}
 return result;
 }
-
-intersectionResult Box::istIntersect(Ray const& ray,float& t) const{
-	return intersectionResult{};
+glm::vec3 Box::getNormal(intersectionResult const& schnittpunkt) const{
+  glm::vec3 position = schnittpunkt.position; 
+  if(position.x == Approx(minimum_.x))
+  {
+    return glm::vec3{-1.0,0.0,0.0};
+  }
+  if(position.y == Approx(minimum_.y))
+  {
+    return glm::vec3{0.0,-1.0,0.0};
+  }
+  if(position.z == Approx(minimum_.z))
+  {
+    return glm::vec3{0.0,0.0,-1.0};
+  }
+  if(position.x == Approx(maximum_.x))
+  {
+    return glm::vec3{1.0,0.0,0.0};
+  }
+  if(position.y == Approx(maximum_.y))
+  {
+    return glm::vec3{0.0,1.0,0.0};
+  }
+  if(position.z == Approx(maximum_.z))
+  {
+    return glm::vec3{0.0,0.0,1.0};
+  }
 }
+intersectionResult Box::istIntersect(Ray const& ray,float& t) const{
+    	/*intersectionResult result{};
+    	if(intersect(ray,t)==true)
+    		{	
+    			result.hit=true;
+    			result.distance = t;
+    			result.position=ray.getpoint(result.distance);
+    			result.normal = glm::normalize(getNormal(result));
+				result.closest_shape=this;
+    		}
+    	return result;*/
+}
+
+
+
+
 
 
 
