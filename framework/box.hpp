@@ -1,17 +1,15 @@
 #ifndef BOX_HPP
 #define BOX_HPP 
+
+ 
 #include <glm/glm.hpp>
 #include <glm/gtx/intersect.hpp>     
 #include "shape.hpp"
 #include <string>
-#include "color.hpp"
-#include "ray.hpp"
 #include "material.hpp"
-#include "light.hpp"
-#include "camera.hpp"
 using namespace std;
-#include <glm/vec3.hpp>
 #include <catch.hpp>
+#include <glm/vec3.hpp> 
 #include <algorithm>
 //Minimum und Maximum vec3
 // Konstruktoren; get-Methoden; Methoden area und volume
@@ -30,11 +28,11 @@ public:
 // Aufgabe 5.5
 	ostream& print(ostream& os) const override;
 
-	bool intersect (Ray const& ray, float& t) const override;
+	bool intersect (Ray const& rsay, float& t) const override;
 	intersectionResult istIntersect(Ray const& ray,float& t) const override;
 	glm::vec3 getNormal(intersectionResult const& schnittpunkt) const override;
 
-public:
+
 	glm::vec3 minimum_;
 	glm::vec3 maximum_;
 };
