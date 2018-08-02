@@ -37,16 +37,19 @@ Scene open_sdf_datei(string const& filename){
               istrm>>(c->ks).g;
               istrm>>(c->ks).b;
 
+              istrm>>(c->refraction);
+              istrm>>(c->refraction_index);
               istrm>>c->exponente_m;
-              cout<<c->name<<" "<<(c->ka).r<<" "<<(c->ka).g<<" "<<(c->ka).b;
-              cout<<" "<<(c->kd).r<<" "<<(c->kd).g<<" "<<(c->kd).b;
-              cout<<" "<<(c->ks).r<<" "<<(c->ks).g<<" "<<(c->ks).b;
-              cout<<" "<<c->exponente_m<<endl;
 
               (scene.vector_material).push_back(c); // vector
               (scene.set_material).insert(c);       // set        
-              (scene.map_material).insert(make_pair(c->name,c)); // map              
+              (scene.map_material).insert(make_pair(c->name,c)); // map 
+              cout<<c->name<<" "<<(c->ka).r<<" "<<(c->ka).g<<" "<<(c->ka).b;
+              cout<<" "<<(c->kd).r<<" "<<(c->kd).g<<" "<<(c->kd).b;
+              cout<<" "<<(c->ks).r<<" "<<(c->ks).g<<" "<<(c->ks).b;
+              cout<<" "<<c->exponente_m<<endl;           
              }
+             
 // Aufgabe 7.2 Datei SDF shape lesen
              if(differ_string=="shape"){
               cout<<" shape ";
@@ -70,7 +73,7 @@ Scene open_sdf_datei(string const& filename){
                 cout<<box_objekt->get_name()<<" "<<(box_objekt->minimum_).x<<" "<<(box_objekt->minimum_).y<<" "
                     <<(box_objekt->minimum_).z<<" "<<(box_objekt->maximum_).x<<" "<<(box_objekt->maximum_).y<<" "<<
                     (box_objekt->maximum_).z<<" "<<(box_objekt->material_)->name<<endl;
-               // (scene.composite_objekt).add(box_objekt);
+              
               }
              if(differ_string=="sphere"){
                 auto sphere_objekt = make_shared<Sphere>();
@@ -88,10 +91,8 @@ Scene open_sdf_datei(string const& filename){
 
                 cout<<sphere_objekt->get_name()<<" "<<(sphere_objekt->mittelpunkt_).x<<" "<<(sphere_objekt->mittelpunkt_).y<<" "
                 <<(sphere_objekt->mittelpunkt_).z<<" "<<sphere_objekt->radius_<<" "<<(sphere_objekt->material_)->name<<endl;
-               
-               // (scene.composite_objekt).add(sphere_objekt);
               }
-              if(differ_string=="composite"){
+            if(differ_string=="composite"){
 
                 //string composite_name;
                 //istrm>> composite_name;
@@ -118,7 +119,7 @@ Scene open_sdf_datei(string const& filename){
                   cout<<" "<<name;
                 }
                 cout<<endl;
-              } 
+            }
 
              }
       if(differ_string=="light"){
@@ -139,6 +140,15 @@ Scene open_sdf_datei(string const& filename){
       if(differ_string=="camera"){  //camera kein Problem
                 istrm>> (scene.camera).name_;
                 istrm>> (scene.camera).fov_x_;
+                istrm>> (scene.camera).eye_.x;
+                istrm>> (scene.camera).eye_.y;
+                istrm>> (scene.camera).eye_.z;
+                istrm>> (scene.camera).dir_.x;
+                istrm>> (scene.camera).dir_.y;
+                istrm>> (scene.camera).dir_.z;
+                istrm>> (scene.camera).up_.x;
+                istrm>> (scene.camera).up_.y;
+                istrm>> (scene.camera).up_.z;
                 cout<<" "<<(scene.camera).name_<<" "<<(scene.camera).fov_x_<<" "<<(scene.camera).eye_.x<<
                 " "<<(scene.camera).eye_.y<<" "<<(scene.camera).eye_.z<<" "<<(scene.camera).dir_.x<<
                 " "<<(scene.camera).dir_.y<<" "<<(scene.camera).dir_.z<<" "<<(scene.camera).up_.x<<" "
