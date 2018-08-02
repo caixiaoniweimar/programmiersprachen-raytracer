@@ -74,12 +74,12 @@ bool Box::intersect (Ray const& ray, float& t) const{
 					cerr<<"Schnittpunkt existiert nicht."<<endl;
 				}
 				else{
-					cout<<"t: "<<t<<endl;
+					//cout<<"t: "<<t<<endl;
 				}
 			}
 		else{	//射线沿x轴负方向偏移
 				t=(maximum_.x - ray_origin.x) / ray_direction.x;
-				cout<<"t: "<<t<<endl;
+				//cout<<"t: "<<t<<endl;
 			}
 		if ( t>0 ){ // t>0, 射线与平面相交
 			schnittpunkt = ray_origin + t*(ray_direction); // 交点坐标
@@ -130,6 +130,7 @@ bool Box::intersect (Ray const& ray, float& t) const{
 	}
 return result;
 }
+
 glm::vec3 Box::getNormal(intersectionResult const& schnittpunkt) const{
   glm::vec3 position = schnittpunkt.position; 
   if(position.x == Approx(minimum_.x))
@@ -157,8 +158,9 @@ glm::vec3 Box::getNormal(intersectionResult const& schnittpunkt) const{
     return glm::vec3{0.0,0.0,1.0};
   }
 }
+
 intersectionResult Box::istIntersect(Ray const& ray,float& t) const{
-    	/*intersectionResult result{};
+    	intersectionResult result{};
     	if(intersect(ray,t)==true)
     		{	
     			result.hit=true;
@@ -166,8 +168,9 @@ intersectionResult Box::istIntersect(Ray const& ray,float& t) const{
     			result.position=ray.getpoint(result.distance);
     			result.normal = glm::normalize(getNormal(result));
 				result.closest_shape=this;
+				//cout<<"Box"<<endl;
     		}
-    	return result;*/
+    	return result;
 }
 
 
