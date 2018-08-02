@@ -1,52 +1,24 @@
 #ifndef COMPOSITE_HPP
 #define COMPOSITE_HPP
-#include "box.hpp"
-#include "material.hpp"
-#include "shape.hpp"
-#include "sphere.hpp"
-#include "color.hpp"
-#include <iostream>
-#include <list>
+#include "shape.hpp" 
 #include <vector>
-#include <string>
+#include <glm/vec3.hpp>
+#include <memory>
+#include "shape.hpp"
+
 using namespace std;
 
 class Composite: public Shape{
 
 public:
-	Composite():
-		Shape(),
-		composite_{} {}
+	Composite();
+	Composite(string const& name);
+	~Composite();
 
-	void add( shared_ptr<Shape> objekt ){
-		composite_.push_back(objekt);
-	}
-
-	// vergleichen die naehesten Objekt!!(closet_distance!!!)
-	intersectionResult istIntersect(Ray const& ray,float& t) const override{
-		intersectionResult result;
-		intersectionResult tmp_Result;
-		for( int i=0; i< composite_.size(); ++i ){
-				tmp_Result = composite_[i]->istIntersect(ray,t);
-			if( tmp_Result.distance < result.distance ){
-				result=tmp_Result;
-			} 
-		}
-		return result;
-	}
-
-// Shape ist abstract Class!!
-	double area() const {
-		return 0;
-	}
-	double volume() const {
-		return 0;
-	}
-	bool intersect(Ray const& ray,float& t) const{ 
-		return false;
-	}
-
-	~Composite(){}
+	void add( shared_ptr<Shape> objekt );
+	intersectionResult istIntersect(Ray const& ray,float& t) const override;
+	bool intersect(Ray const& ray, float& t) const override;
+	glm::vec3 getNormal(intersectionResult const& schnittpunkt) const override;
 
 public:
 	vector<shared_ptr<Shape>> composite_;
