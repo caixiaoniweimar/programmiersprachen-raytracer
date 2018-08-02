@@ -19,7 +19,7 @@ bool operator== (shared_ptr<Material> const& m1, shared_ptr<Material> const& m2)
 }
 
 int main(){
-  Scene s1;
+  /*Scene s1;
   s1=open_sdf_datei("beispiel.xsd");
   cout<<endl;
   cout<<"Test Find:"<<endl;
@@ -43,5 +43,5 @@ int main(){
   set_find("red",set1);
   set_find("blue",set1);
   set_find("green",set1);
-  return 0;
+  return 0;*/
 }
