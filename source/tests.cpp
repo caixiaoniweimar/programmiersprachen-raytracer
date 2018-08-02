@@ -16,7 +16,7 @@
 #include <scene.hpp>
 using namespace std;
 // Aufgabe 5.2
-TEST_CASE ("test_area_sphere_box","[area]"){ //Standardkonstruktor
+/*TEST_CASE ("test_area_sphere_box","[area]"){ //Standardkonstruktor
     //auto sphere1 = Sphere{}; //4r^2\pi
     Sphere sphere1{};
     REQUIRE(sphere1.area()==Approx(12.56637).epsilon(0.01));
@@ -139,7 +139,7 @@ TEST_CASE("intersect_box","[intersect_box]"){
 	auto result4=box4.intersect(ray4,distance4);
 	REQUIRE( result4 == true );
 
-}
+}*/
 
 int main(int argc, char *argv[])
 {	
