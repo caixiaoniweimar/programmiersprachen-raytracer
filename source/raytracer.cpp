@@ -17,18 +17,16 @@ int main(int argc, char* argv[])
   //unsigned const image_width = 800;
   //unsigned const image_height = 600; //窗口的大小
   std::string const filename = "./checkerboard.ppm";
-  unsigned const image_width = 600;
-  unsigned const image_height = 600;
-
-  Renderer renderer{image_width, image_height, filename};
+  unsigned const image_width = 500;
+  unsigned const image_height = 500;
+  Scene scene{};
+  scene=open_sdf_datei("beispiel.xsd");
+  Renderer renderer{scene,image_width, image_height, filename};
+  renderer.render();
   
   //create separate thread to see updates of pixels while rendering 创建单独的线程以在渲染时查看像素的更新
   //std::thread render_thread([&renderer]() {renderer.render();});
-
-  Scene scene{};
-
-  scene=open_sdf_datei("beispiel.xsd");
-  renderer.render(scene);
+  //renderer.render(scene);
 
   Window window{{image_width, image_height}};
 
