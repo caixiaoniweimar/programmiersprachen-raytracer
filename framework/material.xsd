@@ -1,0 +1,31 @@
+# materials
+define material rose         1 .4 .5   1 .4 .5   .8 .8 .8       100
+define material blue         .5 .5 1   .5 .5 1   .8 .8 .8       100
+define material orange         1 .55 .5   1 .55 .5   .8 .8 .8       100
+define material yellow         1 1 0   1 1 0   .8 .8 .8           100
+define material lightgray    .8 .8 .8   .8 .8 .8   .1 .1 .1       100
+# geometry
+define shape sphere asphere    -7 1 -9    1      blue 
+define shape sphere bsphere    -.5 3 -5   3   rose
+define shape sphere csphere    -9.5 4 -15   4    orange
+define shape sphere dsphere    -5 .5 -4   .5    yellow
+#define shape box ground -50 -1 -50 50 0 10 lightgray
+#define shape box wall -50 0 -50 50 50 -49 lightgray
+# composite
+define shape composite root asphere bsphere csphere dsphere 
+# scene xform
+transform rbottom rotate 45 0 0 1
+transform rbottom translate 0 0 -10
+transform bsphere rotate 45 0 0 1
+transform bsphere translate 0 0 -10
+# lights
+define light sun  -50 200 100   .2 .2 .2 4
+#define light inbox 19 3.8 0     .2 .2 .2 2
+ambient 0.2 0.2 0.2
+# camera
+define camera eye  45.0    -5 2 2   0 0 -1   0 1 0
+# camera xform
+transform eye rotate -45 0 1 0
+transform eye translate 100 0 100
+# ... and go
+# render eye image .ppm 480 320
