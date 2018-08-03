@@ -193,6 +193,9 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth) const{
     result_Color.r = pow(result_Color.r, 1.2f)*1.2f;
     result_Color.g = pow(result_Color.g, 1.2f)*1.2f;
     result_Color.b = pow(result_Color.b, 1.2f)*1.2f;
+/* Mein Verständnis von Tone_mapping ist wie folgt:   Buch <<Ray Tracing From The Ground Up>>
+  [0,1]->[0,255]  Die Helligkeit 
+*/
   }
   else{
     result_Color = scene.ambiente;
@@ -200,17 +203,3 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth) const{
   return result_Color;
 }
 //reflection反射,倒影 refraction折射
-
-
-
-
-
-
-
-
-
-
-
-
-
-
