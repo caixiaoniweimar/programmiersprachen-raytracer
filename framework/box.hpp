@@ -28,7 +28,9 @@ public:
 // Aufgabe 5.5
 	ostream& print(ostream& os) const override;
 
+	bool intersect_neue (Ray const& ray, float& t, glm::vec3& normal) const;
 	bool intersect (Ray const& rsay, float& t) const override;
+	glm::vec3 get_normal(int plane) const;
 	intersectionResult istIntersect(Ray const& ray,float& t) const override;
 	glm::vec3 getNormal(intersectionResult const& schnittpunkt) const override;
 
