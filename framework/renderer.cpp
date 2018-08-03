@@ -21,7 +21,6 @@ Renderer::Renderer(Scene const& scene, unsigned w, unsigned h, std::string const
 /*void Renderer::render()
 {
   std::size_t const checker_pattern_size = 20;
-
   for (unsigned y = 0; y < height_; ++y) {
     for (unsigned x = 0; x < width_; ++x) {
       Pixel p(x,y);
@@ -57,7 +56,6 @@ void Renderer::write(Pixel const& p)
   for(unsigned y=0; y<height_; ++y){
      float sy= 1.0-y*1.0/height_;
     for(unsigned x=0; x<width_; ++x){
-
       float sx= x*1.0/width_;
       Pixel p(x,y);
       Ray ray= camera.erzeugen_ray(sx,sy);
@@ -97,7 +95,7 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth) const{
   Color amb{0,0,0};
   if( schnittpunkt.hit ==true ){
     // rechnen I_a*K_a, rechnen nur ont Time;  I_a->ambiente(color),  k_a von Material Attribute ka
-        amb += (scene.ambiente)*(schnittpunkt.closest_shape->material_->ka);
+        amb = (scene.ambiente)*(schnittpunkt.closest_shape->material_->ka);
         // wenn es viele Light in scene gibt;
         for( int i=0; i< scene.container_light.size(); ++i ){
           Ray light_ray{ schnittpunkt.position, scene.container_light[i].position_ - schnittpunkt.position };
@@ -144,7 +142,8 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth) const{
 // reflektion von andere Objekte!!!!!!!!!
     Color ks_wert = schnittpunkt.closest_shape->material_->ks;
     if( depth>0 ){
-      glm::vec3 V = ray.direction; // schnittpunkt.position - cam.eye
+      glm::vec3 V = ray.direction; //
+      glm::vec3 V1 = glm::normalize(schnittpunkt.position-scene.camera.eye_); // V=V1
       glm::vec3 N = schnittpunkt.normal;
       float VNdot = glm::dot(N,V);
       glm::vec3 R = glm::normalize( V-2*VNdot*N );
@@ -154,8 +153,10 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth) const{
       Color reflektion_Color = raytrace(reflektion_Ray, depth-1);
 
     bool ob_refraction = schnittpunkt.closest_shape->material_->refraction;
-    Color refra_Color{0,0,0};
-    if(ob_refraction && depth>0){
+    // refraction opacity zwischen 0~1 0->Undurchsichtigkeit 1->glass
+    // erzeugen ein Objekt ueberpruefen, ob Methode richtig ist.
+    Color refraktion_Color{0,0,0};
+    if( ob_refraction && depth>0){
       float q;
       float refrac_index = schnittpunkt.closest_shape->material_->refraction_index;
       float VNdot1 = glm::dot(N,V);
@@ -179,11 +180,19 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth) const{
       Ray refraction_ray{ schnittpunkt.position, T };
       refraction_ray.origin += refraction_ray.direction*(float)0.001;
 
-      refra_Color = raytrace(refraction_ray,depth-1);
+      refraktion_Color = raytrace(refraction_ray,depth-1);
     }
-      result_Color+=(reflektion_Color)*(ks_wert)*0.3+(refra_Color);
+      result_Color+=(reflektion_Color)*(ks_wert)*0.3+(refraktion_Color);
     }
     result_Color+=amb;
+// Aufgabe 7.1 Tone_mapping
+    //result_Color.r=result_Color.r/(1+result_Color.r); -> zu dunkel
+    //result_Color.g=result_Color.g/(1+result_Color.g);
+    //result_Color.b=result_Color.b/(1+result_Color.b);
+    // Die Farbe sieht aus schoener.
+    result_Color.r = pow(result_Color.r, 1.2f)*1.2f;
+    result_Color.g = pow(result_Color.g, 1.2f)*1.2f;
+    result_Color.b = pow(result_Color.b, 1.2f)*1.2f;
   }
   else{
     result_Color = scene.ambiente;
