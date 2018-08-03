@@ -1,9 +1,9 @@
 # materials
-define material rose         1 .4 .5   1 .4 .5   .8 .8 .8       100
-define material blue         .5 .5 1   .5 .5 1   .8 .8 .8       100
-define material orange         1 .55 .5   1 .55 .5   .8 .8 .8       100
-define material yellow         1 1 0   1 1 0   .8 .8 .8           100
-define material lightgray    .8 .8 .8   .8 .8 .8   .1 .1 .1       100
+define material rose         1 .4 .5   1 .4 .5   .8 .8 .8  0 1     100
+define material blue         .5 .5 1   .5 .5 1   .8 .8 .8  0 1     100
+define material orange         1 .55 .5   1 .55 .5   .8 .8 .8 0 1      100
+define material yellow         1 1 0   1 1 0   .8 .8 .8   0 1        100
+define material lightgray    .8 .8 .8   .8 .8 .8   .1 .1 .1  0 1     100
 # geometry
 define shape sphere asphere    -7 1 -9    1      blue 
 define shape sphere bsphere    -.5 3 -5   3   rose
