@@ -74,15 +74,13 @@ using namespace std;
     // 之后考虑新Ray, transformRay
    intersectionResult Sphere::istIntersect(Ray const& ray,float& t) const{
     	intersectionResult result{};
-// Theresa SDF Datei intersect funktioniert
     	if(intersect(ray,t)==true)
     		{	
     			result.hit=true;
     			result.distance = t;
     			result.position=ray.getpoint(result.distance);
     			result.normal = glm::normalize(result.position - mittelpunkt_);
-				result.closest_shape=this;
-				//cout<<"Sphere"<<endl;   
+				result.closest_shape=this;   
     		}
     	return result;
     }
