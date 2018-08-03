@@ -41,7 +41,6 @@ PpmWriter::write(Pixel const& p)
     data_[pos] = (unsigned int)std::max(0.0, std::min(255.0 * p.color.r, 255.0));
     data_[pos+1] = (unsigned int)std::max(0.0, std::min(255.0 * p.color.g, 255.0));
     data_[pos+2] = (unsigned int)std::max(0.0, std::min(255.0 * p.color.b, 255.0));
-    //cout<<data_[pos]<<" "<<data_[pos+1]<<" "<<data_[pos+2]<<endl;
   }
 }
 
