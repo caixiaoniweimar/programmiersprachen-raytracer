@@ -55,7 +55,7 @@ struct Color
   Color& operator/=(float other){
     r /= other;
     g /= other;
-    b = other;
+    b /= other;
     return *this;
   }
 
@@ -82,7 +82,7 @@ struct Color
 
   friend Color operator* (Color const& a, float b){
     auto tmp(a);
-    tmp /= b;
+    tmp *= b;
     return tmp;
   }
 
@@ -92,17 +92,9 @@ struct Color
     return tmp;
   }
 
-  void check(){
-      r = r>1.0? 1.0:r;
-      g = g>1.0? 1.0:g;
-      b = b>1.0? 1.0:b;
-  }
-
   float r=0.0;
   float g=0.0;
   float b=0.0;
 };
-
-
 
 #endif //#define BUW_COLOR_HPP
