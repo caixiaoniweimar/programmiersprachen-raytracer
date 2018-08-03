@@ -16,7 +16,7 @@ intersectionResult Composite::istIntersect(Ray const& ray,float& t) const{
 		intersectionResult tmp_Result;
 		for( int i=0; i< composite_.size(); ++i ){
 				tmp_Result = composite_[i]->istIntersect(ray,t);
-			if( tmp_Result.hit==true && tmp_Result.distance < result.distance ){    // erste unterschied als Theresa!!!
+			if( tmp_Result.distance < result.distance ){    
 				result=tmp_Result;
 			} 
 		}
