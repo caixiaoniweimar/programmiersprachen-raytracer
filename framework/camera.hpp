@@ -35,7 +35,7 @@ public:
 		glm::vec3 tmp=dir_+r+u;
 		return Ray{eye_,glm::normalize(tmp)};
 	}*/
-	/*Ray erzeugen_ray(float x,float y, float width, float height){
+	Ray erzeugen_ray(float x,float y, float width, float height){
 		glm::vec3 direction{ x*(1.0/width)-0.5, y*(1.0/height)-0.5, 
 			    -1.0*(0.5/tan(fov_x_*M_PI/360)) };
 	    Ray ray{ {0,0,0},direction };
@@ -48,17 +48,17 @@ public:
 		glm::vec3 direction1{transformMatrix_*b};
 		return {origin1,direction1};
 		//return ray;
-	}*/
+	}
 
 	// Camera Modell von Theresa, benutzt beispiel2.xsd;
-	Ray erzeugen_ray(float x, float y, float width_, float height_) const {
+	/*Ray erzeugen_ray(float x, float y, float width_, float height_) const {
         glm::vec3 rayOrigin{0,0,0};
         glm::vec3 rayDirection = { (x-width_/2), (y-height_/2),
 			-(width_/2)/tan(fov_x_/2) };
 		return Ray{rayOrigin,rayDirection};
-    } 
+    } */
         
-	/*glm::mat4 transformMatrix()
+	glm::mat4 transformMatrix()
     {
   	  glm::vec3 u = glm::normalize(glm::cross(glm::normalize(dir_),up_));
   	  glm::vec3 v = glm::normalize(glm::cross(u,glm::normalize(dir_)));
@@ -68,7 +68,7 @@ public:
   	  transformatrix[1] = glm::vec4(v,0.0);
   	  transformatrix[0] = glm::vec4(u,0.0);
       return transformatrix;
-    }*/
+    }
 
 	string name_;
 	float fov_x_;
