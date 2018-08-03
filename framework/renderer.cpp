@@ -97,12 +97,12 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth) const{
   intersectionResult schnittpunkt = (scene.root)->istIntersect(ray,t);
   
   Color amb{0,0,0};
+  //amb += (scene.ambiente)*(schnittpunkt.closest_shape->material_->ka);
   if( schnittpunkt.hit ==true ){
     // rechnen Diffuse 
         amb += (scene.ambiente)*(schnittpunkt.closest_shape->material_->ka);
         for( int i=0; i< scene.container_light.size(); ++i ){
-
-          Ray light_ray{ schnittpunkt.position, glm::normalize(scene.container_light[i].position_ - schnittpunkt.position) };
+          Ray light_ray{ schnittpunkt.position, scene.container_light[i].position_ - schnittpunkt.position };
           light_ray.origin += light_ray.direction*(float)0.001; // no intersect with self
 
           glm::vec3 L = light_ray.direction;
@@ -110,52 +110,29 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth) const{
           glm::vec3 N = schnittpunkt.normal;
           float LNdot = glm::dot(L,N);
 // ???????????????????
-           //result_Color += (scene.container_light[i].color_) * (schnittpunkt.closest_shape->material_->ka);
+          //result_Color += (scene.container_light[i].color_) * (schnittpunkt.closest_shape->material_->ka);
 
           //wenn nicht erfolgreich, dann probieren scene.root oder scene.container_objekt
-          intersectionResult ob_andere_objekt = scene.root->istIntersect(light_ray,t);
-
+          float t1=2000;
+          intersectionResult ob_andere_objekt = scene.root->istIntersect(light_ray,t1);
           float light_position_x = scene.container_light[i].position_.x;
           float lightray_origin_x = light_ray.origin.x;
           float lightray_direction_x = light_ray.direction.x;
-
           // Theresa change 2, grosse Unterschied!!!
           float lightray_distance1 = glm::distance( scene.container_light[i].position_ , light_ray.origin );
           float lightray_distance = ( (light_position_x - lightray_origin_x)/ lightray_direction_x  );
 
-          if(lightray_distance1==lightray_distance){
-            cout<<"Ich habe richtig verstanden."<<endl;
-          }
           // kein Schatten!!
-          /*if( !ob_andere_objekt.hit || ob_andere_objekt.distance > lightray_distance ) {
+          if( !ob_andere_objekt.hit || ob_andere_objekt.distance > lightray_distance ) {
             result_Color += ( scene.container_light[i].rechnen_intensitaet() )*( schnittpunkt.closest_shape->material_->kd ) * max( LNdot,0.0f );
               glm::vec3 R = glm::normalize(2 * LNdot * N-L);
               glm::vec3 V = -ray.direction;
               glm::vec3 V1 = glm::normalize( scene.camera.eye_ - schnittpunkt.position );
-              // gucken, welche richtig ist
-              if( V.x == V1.x && V.y == V1.y && V.z == V1.z ){
-                cout<<"Ich habe richtig verstanden 2."<<endl;
-              }
               float RVdot = glm::dot(R,V);
 
               result_Color += ( scene.container_light[i].rechnen_intensitaet() )* (schnittpunkt.closest_shape->material_->ks)*
                               pow( max(RVdot,0.0f), (schnittpunkt.closest_shape->material_)->exponente_m );
-          }*/
-          float p=0.0;
-          if(ob_andere_objekt.hit == false){
-            p=-1.0;
           }
-          glm::vec3 R = glm::normalize(2 * LNdot * N-L);
-          glm::vec3 V = -ray.direction;
-          float RVdot = glm::dot(R,V);
-          float RVdot_max = max(RVdot,0.0f);
-          Color color = (schnittpunkt.closest_shape->material_->ks)*pow( RVdot_max, (schnittpunkt.closest_shape->material_)->exponente_m );
-
-          Color color2 = (schnittpunkt.closest_shape->material_->kd) * max(LNdot,0.0f);
-          Color end = scene.container_light[i].rechnen_intensitaet()*(color+color2)*p;
-          //result_Color += ( scene.container_light[i].rechnen_intensitaet() )* (schnittpunkt.closest_shape->material_->ks)*
-          //                    pow( max(RVdot,0.0f), (schnittpunkt.closest_shape->material_)->exponente_m );
-          result_Color += end;
         }
 // reflektion von andere Objekte!!!!!!!!!
     Color ks_wert = schnittpunkt.closest_shape->material_->ks;
