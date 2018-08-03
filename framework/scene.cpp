@@ -37,8 +37,8 @@ Scene open_sdf_datei(string const& filename){
               istrm>>(c->ks).g;
               istrm>>(c->ks).b;
 
-              istrm>>(c->refraction);
-              istrm>>(c->refraction_index);
+              //istrm>>(c->refraction);
+              //istrm>>(c->refraction_index);
               istrm>>c->exponente_m;
 
               (scene.vector_material).push_back(c); // vector
@@ -48,9 +48,8 @@ Scene open_sdf_datei(string const& filename){
               cout<<" "<<(c->kd).r<<" "<<(c->kd).g<<" "<<(c->kd).b;
               cout<<" "<<(c->ks).r<<" "<<(c->ks).g<<" "<<(c->ks).b;
               cout<<" "<<c->exponente_m<<endl;           
-             }
+             } // sieht aus richtig
              
-// Aufgabe 7.2 Datei SDF shape lesen
              if(differ_string=="shape"){
               cout<<" shape ";
               istrm>>differ_string;
