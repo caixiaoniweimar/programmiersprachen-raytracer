@@ -37,8 +37,8 @@ Scene open_sdf_datei(string const& filename){
               istrm>>(c->ks).g;
               istrm>>(c->ks).b;
 
-              //istrm>>(c->refraction);
-              //istrm>>(c->refraction_index);
+              istrm>>(c->refraction);
+              istrm>>(c->refraction_index);
               istrm>>c->exponente_m;
 
               (scene.vector_material).push_back(c); // vector
