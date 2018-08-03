@@ -47,7 +47,6 @@ public:
 		glm::vec3 origin1{transformMatrix_*a};
 		glm::vec3 direction1{transformMatrix_*b};
 		return {origin1,direction1};
-		//return ray;
 	}
 
 	// Camera Modell von Theresa, benutzt beispiel2.xsd;
