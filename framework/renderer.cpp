@@ -17,7 +17,7 @@ Renderer::Renderer(Scene const& scene, unsigned w, unsigned h, std::string const
   , filename_(file)
   , ppm_(width_, height_) {}
 
-// Beispiel render()
+// Beispiel render() (initiale)
 /*void Renderer::render()
 {
   std::size_t const checker_pattern_size = 20;
@@ -79,12 +79,10 @@ void Renderer::write(Pixel const& p)
 
 void Renderer::render(){
   for(unsigned y=0.0; y<height_; ++y){
-      // float sy= 1.0-y*1.0/height_;       erste CameraModell, aber failed
     for(unsigned x=0.0; x<width_; ++x){
-      //float sx= x*1.0/width_;
       Pixel p(x,y);
       Ray ray= scene.camera.erzeugen_ray(x,y,width_,height_);
-      p.color = raytrace(ray,3); // bestimmt depth
+      p.color = raytrace(ray,10); // bestimmt depth
       write(p);
     }
   }
@@ -97,46 +95,55 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth) const{
   intersectionResult schnittpunkt = (scene.root)->istIntersect(ray,t);
   
   Color amb{0,0,0};
-  //amb += (scene.ambiente)*(schnittpunkt.closest_shape->material_->ka);
   if( schnittpunkt.hit ==true ){
-    // rechnen Diffuse 
+    // rechnen I_a*K_a, rechnen nur ont Time;  I_a->ambiente(color),  k_a von Material Attribute ka
         amb += (scene.ambiente)*(schnittpunkt.closest_shape->material_->ka);
+        // wenn es viele Light in scene gibt;
         for( int i=0; i< scene.container_light.size(); ++i ){
           Ray light_ray{ schnittpunkt.position, scene.container_light[i].position_ - schnittpunkt.position };
-          light_ray.origin += light_ray.direction*(float)0.001; // no intersect with self
-
-          glm::vec3 L = light_ray.direction;
-          //glm::vec3 L1 = glm::normalize(scene.container_light[i].position_ - schnittpunkt.position);
-          glm::vec3 N = schnittpunkt.normal;
-          float LNdot = glm::dot(L,N);
-// ???????????????????
-          //result_Color += (scene.container_light[i].color_) * (schnittpunkt.closest_shape->material_->ka);
-
-          //wenn nicht erfolgreich, dann probieren scene.root oder scene.container_objekt
+          light_ray.origin += light_ray.direction*(float)0.001; // Wichtig, dann gibt es kein Intersect mit selbst
+        
           float t1=2000;
           intersectionResult ob_andere_objekt = scene.root->istIntersect(light_ray,t1);
+
           float light_position_x = scene.container_light[i].position_.x;
           float lightray_origin_x = light_ray.origin.x;
           float lightray_direction_x = light_ray.direction.x;
-          // Theresa change 2, grosse Unterschied!!!
+          
           float lightray_distance1 = glm::distance( scene.container_light[i].position_ , light_ray.origin );
-          float lightray_distance = ( (light_position_x - lightray_origin_x)/ lightray_direction_x  );
+          float lightray_distance = ( (light_position_x - lightray_origin_x)/ lightray_direction_x  ); 
+          //lightray_distance1=lightrat_distance ich habe richtig verstanden
 
-          // kein Schatten!!
-          if( !ob_andere_objekt.hit || ob_andere_objekt.distance > lightray_distance ) {
-            result_Color += ( scene.container_light[i].rechnen_intensitaet() )*( schnittpunkt.closest_shape->material_->kd ) * max( LNdot,0.0f );
+          
+          glm::vec3 L = light_ray.direction;
+          //glm::vec3 L1 = glm::normalize(scene.container_light[i].position_ - schnittpunkt.position); L1=L
+          glm::vec3 N = schnittpunkt.normal;
+          float LNdot = glm::dot(L,N);
+
+          // kein Schatten!! wenn hit=flase, dann heisst kein Schatten, I=I_a*k_a + I_ip(k_d*dot(N,L)+k_s*dot(R,V)^m);
+          // I_ip jede Licht!!! rechnen_intensitaet: brightness*light_color
+          // ueberprufen ob andere objekt zwischen Lichtquelle und schnittpunkt liegt, wenn Objekt liegt, dann gibt es
+          // Schatten,Farbe nur I_a*k_a
+          if( ob_andere_objekt.hit==false || ob_andere_objekt.distance > lightray_distance ) {
+
               glm::vec3 R = glm::normalize(2 * LNdot * N-L);
               glm::vec3 V = -ray.direction;
               glm::vec3 V1 = glm::normalize( scene.camera.eye_ - schnittpunkt.position );
+              // V=V1,ich habe wieder verstanden.
               float RVdot = glm::dot(R,V);
 
+              // zuerste plus I_ip*k_d*dot(N,L)
+              result_Color += ( scene.container_light[i].rechnen_intensitaet() )*( schnittpunkt.closest_shape->material_->kd ) * max( LNdot,0.0f );
+              // dann plus I_ip*k_s*dot(R,V)^m
               result_Color += ( scene.container_light[i].rechnen_intensitaet() )* (schnittpunkt.closest_shape->material_->ks)*
                               pow( max(RVdot,0.0f), (schnittpunkt.closest_shape->material_)->exponente_m );
+            // aus Adrian Folien Page 18!!!sehr wichtig!!! und verstanden!!
           }
         }
+
 // reflektion von andere Objekte!!!!!!!!!
     Color ks_wert = schnittpunkt.closest_shape->material_->ks;
-    if( depth>100 ){
+    if( depth>0 ){
       glm::vec3 V = ray.direction; // schnittpunkt.position - cam.eye
       glm::vec3 N = schnittpunkt.normal;
       float VNdot = glm::dot(N,V);
