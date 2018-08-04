@@ -18,7 +18,7 @@ public:
 	bool intersect (Ray const& ray, float& t) const override;
 	intersectionResult istIntersect(Ray const& ray,float& t) const override;
     glm::vec3 getNormal() const;
-    //ignorieren
+    //ignorieren diese Methode schreibt nicht so gut.
 	glm::vec3 getNormal(intersectionResult const& schnittpunkt) const override;
     bool intersect_auto(Ray const& ray, float& t, glm::vec3& schnittpunkt) const;
 
