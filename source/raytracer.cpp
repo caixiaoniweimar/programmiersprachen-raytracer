@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
   unsigned const image_width = 500;
   unsigned const image_height = 500;
   Scene scene{};
-  scene=open_sdf_datei("beispiel.xsd");
+  scene=open_sdf_datei("beispiel2.xsd");
  // scene=open_sdf_datei("beispiel.xsd");
   Renderer renderer{scene,image_width, image_height, filename};
   renderer.render();
