@@ -11,7 +11,8 @@
 #define BUW_COLOR_HPP
 
 #include <iostream>
-
+#include <algorithm>
+using namespace std;
 struct Color
 {
   Color(float red, float green, float blue) : r(red), g(green), b(blue) {}
@@ -96,5 +97,4 @@ struct Color
   float g=0.0;
   float b=0.0;
 };
-
 #endif //#define BUW_COLOR_HPP
