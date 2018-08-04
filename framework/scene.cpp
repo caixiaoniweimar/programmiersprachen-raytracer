@@ -74,6 +74,29 @@ Scene open_sdf_datei(string const& filename){
                     (box_objekt->maximum_).z<<" "<<(box_objekt->material_)->name<<endl;
               
               }
+              if(differ_string=="dreieck"){
+                auto dreieck_objekt = make_shared<Dreieck>(); // shared_ptr<Box>
+          
+                istrm>> dreieck_objekt->name_;
+
+                istrm>> (dreieck_objekt->punkt1_).x;
+                istrm>> (dreieck_objekt->punkt1_).y;
+                istrm>> (dreieck_objekt->punkt1_).z;
+                istrm>> (dreieck_objekt->punkt2_).x;
+                istrm>> (dreieck_objekt->punkt2_).y;
+                istrm>> (dreieck_objekt->punkt2_).z;
+                istrm>> (dreieck_objekt->punkt3_).x;
+                istrm>> (dreieck_objekt->punkt3_).y;
+                istrm>> (dreieck_objekt->punkt3_).z;
+                istrm>> differ_string;
+                dreieck_objekt->material_=  map_find(differ_string,scene.map_material);
+
+                (scene.container_objekt).push_back(dreieck_objekt);
+                cout<<dreieck_objekt->get_name()<<" "<<(dreieck_objekt->punkt1_).x<<" "<<(dreieck_objekt->punkt1_).y<<" "
+                <<(dreieck_objekt->punkt1_).z<<" "<<(dreieck_objekt->punkt2_).x<<" "<<(dreieck_objekt->punkt2_).y<<" "<<
+                (dreieck_objekt->punkt2_).z<<" "<<(dreieck_objekt->punkt3_).x<<" "<<(dreieck_objekt->punkt3_).y<<" "<<
+                (dreieck_objekt->punkt3_).z<<" "<<(dreieck_objekt->material_)->name<<endl;
+              }
              if(differ_string=="sphere"){
                 auto sphere_objekt = make_shared<Sphere>();
 

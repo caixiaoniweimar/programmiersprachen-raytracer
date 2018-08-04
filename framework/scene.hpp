@@ -18,6 +18,7 @@ using namespace std;
 #include "light.hpp"
 #include "camera.hpp"
 #include "composite.hpp"
+#include "dreieck.hpp"
 
 using material_ptr = std::shared_ptr<Material>;
 
