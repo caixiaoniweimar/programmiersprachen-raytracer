@@ -78,14 +78,15 @@ void Renderer::write(Pixel const& p)
 void Renderer::render(){
   for(unsigned y=0.0; y<height_; ++y){
     for(unsigned x=0.0; x<width_; ++x){
-      Pixel p(x,y);
-      Ray ray= scene.camera.erzeugen_ray(x,y,width_,height_);
-      p.color = raytrace(ray,10); // bestimmt depth
+        Pixel p(x,y);
+        Ray ray= scene.camera.erzeugen_ray(x,y,width_,height_);
+        p.color = raytrace(ray,10); // bestimmt depth
       write(p);
     }
   }
   ppm_.save(filename_);
 }
+
 
 Color Renderer::check(Color const& color) const{
   float max_wert=max(color.r,max(color.g,color.b));

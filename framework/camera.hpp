@@ -36,6 +36,7 @@ public:
 		return Ray{eye_,glm::normalize(tmp)};
 	}*/
 	Ray erzeugen_ray(float x,float y, float width, float height){
+		
 		glm::vec3 direction{ x*(1.0/width)-0.5, y*(1.0/height)-0.5, 
 			    -1.0*(0.5/tan(fov_x_*M_PI/360)) };
 	    Ray ray{ {0,0,0},direction };
