@@ -53,7 +53,7 @@ Box::~Box() {}
 		return material_;
 	}
 
-// Aufgabe 6.3
+// Aufgabe 6.3 // ignorieren
 bool Box::intersect (Ray const& ray, float& t) const{
 	//glm::vec3 ray_direction = glm::normalize(ray.direction); //方向矢量
 	glm::vec3 ray_direction = ray.direction;
@@ -131,12 +131,9 @@ bool Box::intersect (Ray const& ray, float& t) const{
 return result;
 }
 
-// vorher Methode funktioniert nicht so gut, schreibt erneut
+// vorher Methode funktioniert nicht so gut, schreibt erneut, praktisch benutzt
 bool Box::intersect_neue (Ray const& ray, float& t, glm::vec3& normal) const{
-	glm::vec3 normal1=normal;
-	glm::vec3 normal2=normal;
 	bool result=false;
-	bool result1=false;
 	float ox=ray.origin.x;
 	float oy=ray.origin.y;
 	float oz=ray.origin.z;
@@ -172,34 +169,19 @@ bool Box::intersect_neue (Ray const& ray, float& t, glm::vec3& normal) const{
 		max_z=(minimum_.z-oz)*c;
 	}
 	float biggest_t;// biggest_in_t zwischen min_x,min_y,min_z; in_T!!!
-	if(min_x>min_y){
-		biggest_t=min_x;
-	} else{
-		biggest_t=min_y;
-	}
-	if(min_z>biggest_t){
-		biggest_t=min_z;
-	}
 	float smallest_t; // smallest_out_t zwischen max_x,max_y,max_z; out_T!!!
-	if(max_x>max_y){
-		smallest_t=max_x;
-	}else{
-		smallest_t=max_y;
-	}
-	if(max_z<smallest_t){
-		smallest_t=max_z;
-	}
-	result = (biggest_t<smallest_t && smallest_t>10e-6);
+	
 	int plane_in,plane_out;
 	if(min_x>min_y){
 		biggest_t=min_x;
 		plane_in=(a>=0.0)? 0:3;
 	}else{
 		biggest_t=min_y;
-		plane_in=(b>=0.0)?1:4;
+		plane_in=(b>=0.0)? 1:4;
 	}
 	if(min_z>biggest_t){
-		biggest_t=(c>=0.0)?2:5;
+		biggest_t=min_z;
+		plane_in=(c>=0.0)?2:5;
 	}
 	if(max_x<max_y){
 		smallest_t=max_x;
@@ -212,9 +194,8 @@ bool Box::intersect_neue (Ray const& ray, float& t, glm::vec3& normal) const{
 		smallest_t=max_z;
 		plane_out=(c>=0.0)?5:2;
 	}
-	result1=biggest_t<smallest_t && smallest_t>10e-6;
-	if(result1==result){cout<<"Ich habe verstanden"<<endl;}
-	if(result1==true ){ //hit
+	result=biggest_t<smallest_t && smallest_t>10e-6;
+	if(result==true ){ //hit
 		if(biggest_t>10e-6){
 			t=biggest_t;
 			normal=get_normal(plane_in);
@@ -223,15 +204,11 @@ bool Box::intersect_neue (Ray const& ray, float& t, glm::vec3& normal) const{
 			t=smallest_t;
 			normal=get_normal(plane_out);
 		}
-		normal2=normal;
-		if(normal1 !=normal2){
-			cout<<"normal schon change"<<endl;
-		}
 	}
 	return result;
 }
 
-
+// ignorieren
 glm::vec3 Box::getNormal(intersectionResult const& schnittpunkt) const{
   glm::vec3 position = schnittpunkt.position; 
   if(position.x == Approx(minimum_.x))
@@ -259,6 +236,7 @@ glm::vec3 Box::getNormal(intersectionResult const& schnittpunkt) const{
     return glm::vec3{0.0,0.0,1.0};
   }
 }
+// praktisch benutzt
 glm::vec3 Box::get_normal(int plane) const{
 	switch(plane){
 		case 0: return glm::vec3{-1.0,0.0,0.0}; // -x
