@@ -59,9 +59,16 @@ bool Dreieck::intersect (Ray const& ray, float& t) const{
 }
 glm::vec3 Dreieck::getNormal() const{
     glm::vec3 normal;
-    normal = (punkt2_ - punkt1_)*(punkt3_ - punkt1_);
+    normal=glm::cross((punkt1_ - punkt2_),(punkt1_ - punkt3_));
     return glm::normalize(normal);
 }
+//andere Art Dreieck,benutzt glm
+/*bool Dreieck::intersect_auto(Ray const& ray, float& t, glm::vec3& schnittpunkt) const{
+    bool result=false;
+    result = glm::intersectRayTriangle(ray.origin, ray.direction,
+        punkt1_,punkt2_,punkt3_,schnittpunkt);
+    return result;
+}*/
 intersectionResult Dreieck::istIntersect(Ray const& ray,float& t) const{
    intersectionResult result{};
     	if(intersect(ray,t)==true)
