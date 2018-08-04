@@ -21,7 +21,9 @@ public:
 
   void render();
   void write(Pixel const& p);
+  Color check(Color const& color) const;
   Color raytrace(Ray const& ray, unsigned depth) const;
+  
   inline std::vector<Color> const& color_buffer() const
   {
     return color_buffer_;

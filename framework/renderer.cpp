@@ -87,6 +87,15 @@ void Renderer::render(){
   ppm_.save(filename_);
 }
 
+Color Renderer::check(Color const& color) const{
+  float max_wert=max(color.r,max(color.g,color.b));
+  if(max_wert>1.0){
+    return (color/max_wert);
+  }
+  else
+    return color;
+}
+
 Color Renderer::raytrace(Ray const& ray, unsigned depth) const{
   Color result_Color{0,0,0};
   float t=2000;
@@ -182,19 +191,32 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth) const{
 
       refraktion_Color = raytrace(refraction_ray,depth-1);
     }
+
       result_Color+=(reflektion_Color)*(ks_wert)*0.3+(refraktion_Color);
     }
     result_Color+=amb;
 // Aufgabe 7.1 Tone_mapping
-    //result_Color.r=result_Color.r/(1+result_Color.r); -> zu dunkel
+    //result_Color.r=result_Color.r/(1+result_Color.r); //-> zu dunkel
     //result_Color.g=result_Color.g/(1+result_Color.g);
     //result_Color.b=result_Color.b/(1+result_Color.b);
+   
     // Die Farbe sieht aus schoener.
-    result_Color.r = pow(result_Color.r, 1.2f)*1.2f;
-    result_Color.g = pow(result_Color.g, 1.2f)*1.2f;
-    result_Color.b = pow(result_Color.b, 1.2f)*1.2f;
-/* Mein Verständnis von Tone_mapping ist wie folgt:   Buch <<Ray Tracing From The Ground Up>>
-  [0,1]->[0,255]  Die Helligkeit 
+   result_Color=check(result_Color);
+    //check ob noch Color >1.0f, nein! gut
+    /*if(result_Color.r>1.0f){
+      cout<<"r:"<<result_Color.r<<endl;
+    }
+    if(result_Color.g>1.0f){
+      cout<<"g:"<<result_Color.g<<endl;
+    }
+    if(result_Color.b>1.0f){
+      cout<<"b:"<<result_Color.b<<endl;
+    }*/
+    result_Color.r = pow(result_Color.r, 1.2f); // 1.2f->scene.gamma
+    result_Color.g = pow(result_Color.g, 1.2f);
+    result_Color.b = pow(result_Color.b, 1.2f);
+/* Mein Verständnis von Tone_mapping ist wie folgt:
+  [0,1]->[0,255]  Die Helligkeit des Bildschirmes: pow(v,gamma), Mac gamma->1.8
 */
   }
   else{
@@ -203,3 +225,4 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth) const{
   return result_Color;
 }
 //reflection反射,倒影 refraction折射
+
