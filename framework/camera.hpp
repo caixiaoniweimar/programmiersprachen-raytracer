@@ -57,8 +57,6 @@ public:
 	glm::vec3 dir_;  // direction, 0,0,-1
 	glm::vec3 up_; 
     glm::mat4 camera_matrix;
-    //glm::mat4 world_transformation_inv_;
-	//glm::mat4 rotate_;
-	//glm::mat4 translate_;
+    glm::mat4 world_transformation_inv_;
 };
 #endif

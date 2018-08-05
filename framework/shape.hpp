@@ -43,7 +43,8 @@ public:
 		glm::mat4 get_transformation() const;
 		void set_transformation_inv(glm::mat4 world_transfor_inv);
 		glm::mat4 get_transformation_inv() const;
-
+		
+		Ray transformRay(glm::mat4 const& mat, Ray const& ray)const;
 
 // Aufgabe 5.3
 // abgleiteted Klasse wird diese Attribute aufrufen( vererben diese Attribute als private )
@@ -52,12 +53,19 @@ protected:
 // Aufgabe 6.4
 		shared_ptr<Material> material_;
 // Aufgabe 7.5
-		glm::mat4 world_transformation_;
-		glm::mat4 world_transformation_inv_;
-		
+		glm::mat4 world_transformation_{1,0,0,0,
+										0,1,0,0,
+										0,0,1,0,
+										0,0,0,1};      // EinheitMatrix
+		glm::mat4 world_transformation_inv_{1,0,0,0,
+											0,1,0,0,
+											0,0,1,0,
+											0,0,0,1};
+
 };
 // Aufgabe 5.4
 ostream& operator<<(ostream& os,Shape const& s);
+
 struct intersectionResult{
 	float distance;
 	bool hit;

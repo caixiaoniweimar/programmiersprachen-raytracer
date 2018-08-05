@@ -216,3 +216,6 @@ void Window::show(std::vector<Color> const& color_buffer)
   glUseProgram(0);
   update();
 }
+
+
+

@@ -212,6 +212,7 @@ Scene open_sdf_datei(string const& filename){
           cout<<tmp_matrix[3][0]<<" "<<tmp_matrix[3][1]<<" "<<tmp_matrix[3][2]<<" "<<tmp_matrix[3][3]<<endl;
           tmp_matrix=tmp_matrix*translation_mat;
           shape->set_transformation(tmp_matrix);
+          shape->set_transformation_inv(glm::inverse(tmp_matrix));
           cout<<"nach:"<<endl;
           cout<<tmp_matrix[0][0]<<" "<<tmp_matrix[0][1]<<" "<<tmp_matrix[0][2]<<" "<<tmp_matrix[0][3]<<endl;
           cout<<tmp_matrix[1][0]<<" "<<tmp_matrix[1][1]<<" "<<tmp_matrix[1][2]<<" "<<tmp_matrix[1][3]<<endl;
@@ -235,6 +236,7 @@ Scene open_sdf_datei(string const& filename){
           cout<<tmp_matrix[3][0]<<" "<<tmp_matrix[3][1]<<" "<<tmp_matrix[3][2]<<" "<<tmp_matrix[3][3]<<endl;
           tmp_matrix=tmp_matrix*skalierung_mat;
           shape->set_transformation(tmp_matrix);
+          shape->set_transformation_inv( glm::inverse(tmp_matrix) );
           cout<<"nach:"<<endl;
           cout<<tmp_matrix[0][0]<<" "<<tmp_matrix[0][1]<<" "<<tmp_matrix[0][2]<<" "<<tmp_matrix[0][3]<<endl;
           cout<<tmp_matrix[1][0]<<" "<<tmp_matrix[1][1]<<" "<<tmp_matrix[1][2]<<" "<<tmp_matrix[1][3]<<endl;
@@ -261,6 +263,7 @@ Scene open_sdf_datei(string const& filename){
           cout<<tmp_matrix[3][0]<<" "<<tmp_matrix[3][1]<<" "<<tmp_matrix[3][2]<<" "<<tmp_matrix[3][3]<<endl;
           tmp_matrix=tmp_matrix*rotation_mat;
           shape->set_transformation(tmp_matrix);
+          shape->set_transformation_inv( glm::inverse(tmp_matrix) );
           cout<<"nach:"<<endl;
           cout<<tmp_matrix[0][0]<<" "<<tmp_matrix[0][1]<<" "<<tmp_matrix[0][2]<<" "<<tmp_matrix[0][3]<<endl;
           cout<<tmp_matrix[1][0]<<" "<<tmp_matrix[1][1]<<" "<<tmp_matrix[1][2]<<" "<<tmp_matrix[1][3]<<endl;
@@ -268,8 +271,7 @@ Scene open_sdf_datei(string const& filename){
           cout<<tmp_matrix[3][0]<<" "<<tmp_matrix[3][1]<<" "<<tmp_matrix[3][2]<<" "<<tmp_matrix[3][3]<<endl;
         }
 // Matrix A*B nicht gleich B*A 
-// Transformation Reihenfolgen: Vorsichtig. wichtig. unterschiedlich.
-
+// Transformation Reihenfolgen: Vorsichtig. wichtig. unterschiedlich. schon getest! Funktioniert. 
       }
       if(differ_string=="render"){
         istrm>>scene.width;

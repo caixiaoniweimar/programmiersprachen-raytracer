@@ -30,7 +30,11 @@
         "limits": "cpp",
         "cmath": "cpp",
         "ostream": "cpp",
-        "functional": "cpp"
+        "functional": "cpp",
+        "fstream": "cpp",
+        "locale": "cpp",
+        "thread": "cpp",
+        "__bit_reference": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled",
     "cmake.configureOnOpen": false
