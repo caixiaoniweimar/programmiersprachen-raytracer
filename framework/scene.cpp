@@ -186,6 +186,43 @@ Scene open_sdf_datei(string const& filename){
           cout<<"ambiente: "<<scene.ambiente.r<<" "<<scene.ambiente.g<<" "<<scene.ambiente.b<<endl;
       }
       if(differ_string=="transform"){
+        cout<<"transform ";
+        string objekt_name;
+        istrm>>objekt_name;
+        cout<<objekt_name<<" ";
+        istrm>>differ_string;
+        if(differ_string=="translate"){
+          cout<<"translate ";
+          glm::vec3 translation_vector;
+          istrm>> translation_vector.x;
+          istrm>> translation_vector.y;
+          istrm>> translation_vector.z;
+          glm::mat4 translation_mat = translation(translation_vector);
+          // Am Ende =translation_mat * vec4;
+          cout<<" "<<translation_vector.x<<" "<<translation_vector.y<<" "<<translation_vector.z<<endl;
+        }
+        if(differ_string=="scale"){
+          cout<<"scale ";
+          glm::vec3 skalierung_vector;
+          istrm>> skalierung_vector.x;
+          istrm>> skalierung_vector.y;
+          istrm>> skalierung_vector.z;
+          glm::mat4 skalierung_mat = scale(skalierung_vector);
+
+          cout<<skalierung_vector.x<<" "<<skalierung_vector.y<<" "<<skalierung_vector.z<<endl;
+        }
+        if(differ_string =="rotate"){
+          cout<<"rotate ";
+          float winkel;
+          glm::vec3 rotation_vector;
+          istrm>>winkel;
+          istrm>>rotation_vector.x;
+          istrm>>rotation_vector.y;
+          istrm>>rotation_vector.z;
+          glm::mat4 rotation_mat = rotation(winkel,rotation_vector);// Am Ende =rotation_mat * vec4;
+          
+          cout<<winkel<<" "<<rotation_vector.x<<" "<<rotation_vector.y<<" "<<rotation_vector.z<<endl;
+        }
         
       }
       if(differ_string=="render"){
@@ -198,6 +235,54 @@ Scene open_sdf_datei(string const& filename){
   }
 inf.close();
 return scene;
+}
+
+// Aufgabe 7.5
+glm::mat4 translation(glm::vec3 translation_vector){
+  glm::mat4 result(0.0f);
+  result[0] = glm::vec4 {1.0f,0.0f,0.0f,0.0f};
+  result[1] = glm::vec4 {0.0f,1.0f,0.0f,0.0f};
+  result[2] = glm::vec4 {0.0f,0.0f,1.0f,0.0f};
+  result[3] = glm::vec4 {translation_vector,1.0f};
+  return result;
+}
+
+glm::mat4 scale(glm::vec3 skalierung_vector){
+  glm::mat4 result(0.0f);
+  result[0] = glm::vec4 { skalierung_vector.x ,0.0f,0.0f,0.0f};
+  result[1] = glm::vec4 {0.0f,skalierung_vector.y,0.0f,0.0f};
+  result[2] = glm::vec4 {0.0f,0.0f,skalierung_vector.z,0.0f};
+  result[3][3] = 1.0f;
+  return result;
+}
+
+glm::mat4 rotation(float winkel, glm::vec3 rotation_vector){
+  glm::mat4 result(0.0f);
+  if(rotation_vector.x > 0.0f){ // Drehe die X-Achse um; Bedingung: >0.0f oder == 1.0f
+    result[0][0] = 1.0f;
+    result[1][1] = cos(winkel * M_PI /180);
+    result[1][2] = -sin(winkel * M_PI /180);
+    result[2][1] = sin(winkel * M_PI /180);
+    result[2][2] = cos(winkel * M_PI /180);
+    result[3][3] = 1.0f;
+  }
+  if(rotation_vector.y > 0.0f){  // Drehe die Y-Achse um
+    result[0][0] = cos(winkel * M_PI /180);
+    result[0][2] = sin(winkel * M_PI /180);
+    result[1][1] = 1.0f;
+    result[2][0] = -sin(winkel * M_PI /180);
+    result[2][2] = cos(winkel * M_PI /180);
+    result[3][3] = 1.0f;
+  }
+  if(rotation_vector.z > 0.0f){  // Drehe die Z-Achse um
+    result[0][0] = cos(winkel * M_PI /180);
+    result[0][1] = -sin(winkel * M_PI /180);
+    result[1][0] = sin(winkel * M_PI /180);
+    result[1][1] = cos(winkel * M_PI /180);
+    result[2][2] = 1.0f;
+    result[3][3] = 1.0f;
+  }
+  return result;
 }
 
 shared_ptr<Shape> shape_vector_find( string const& such_name, vector<shared_ptr<Shape>> container_objekt ){
@@ -255,6 +340,7 @@ material_ptr set_find(string const& such_name, set< shared_ptr<Material> > set_m
      return nullptr;
   }
 }
+
 
 
 
