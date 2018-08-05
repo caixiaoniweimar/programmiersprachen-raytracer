@@ -94,3 +94,7 @@ glm::vec3 Dreieck::get_punkt2() const{
 glm::vec3 Dreieck::get_punkt3() const{
     return punkt3_;
 }
+
+
+
+

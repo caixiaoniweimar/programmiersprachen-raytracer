@@ -250,3 +250,8 @@ material_ptr set_find(string const& such_name, set< shared_ptr<Material> > set_m
 
 
 
+
+
+
+
+

@@ -271,3 +271,10 @@ intersectionResult Box::istIntersect(Ray const& ray,float& t) const{
 
 
 
+
+
+
+
+
+
+

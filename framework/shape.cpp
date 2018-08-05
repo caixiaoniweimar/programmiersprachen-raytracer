@@ -65,3 +65,6 @@ ostream& operator<<(ostream& os,Shape const& s){
 }
 
 
+
+
+
