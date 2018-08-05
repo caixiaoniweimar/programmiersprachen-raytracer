@@ -178,13 +178,22 @@ Scene open_sdf_datei(string const& filename){
                 <<(scene.camera).up_.y<<" "<<(scene.camera).up_.z<<endl;     
         }  
       }
+      
       if(differ_string=="ambient"){
           istrm>>scene.ambiente.r;
           istrm>>scene.ambiente.g;
           istrm>>scene.ambiente.b;
           cout<<"ambiente: "<<scene.ambiente.r<<" "<<scene.ambiente.g<<" "<<scene.ambiente.b<<endl;
       }
-
+      if(differ_string=="transform"){
+        
+      }
+      if(differ_string=="render"){
+        istrm>>scene.width;
+        istrm>>scene.height;
+        istrm>>scene.filename;
+        cout<<scene.width<<" "<<scene.height<<" "<<scene.filename<<endl;
+      }
     }
   }
 inf.close();
