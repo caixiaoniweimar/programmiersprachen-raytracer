@@ -64,6 +64,16 @@ ostream& operator<<(ostream& os,Shape const& s){
 	return ostream_sentry ? s.print(os) : os;
 }
 
+// Aufgabe 7.5
+Ray Shape::transformRay(glm::mat4 const& mat, Ray const& ray) const{
+	glm::vec4 a{ray.origin,1.0f};
+	glm::vec4 b{ray.direction,0.0f};
+	glm::vec3 origin1{mat*a};
+	glm::vec3 direction1{mat*b};
+	Ray new_Ray{origin1,direction1};
+	return new_Ray;
+}
+
 
 
 

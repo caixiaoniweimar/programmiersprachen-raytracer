@@ -52,6 +52,7 @@ material_ptr map_find(string const& such_name, map< string, shared_ptr<Material>
 material_ptr set_find(string const& such_name, set< shared_ptr<Material> > set_material);
 
 glm::mat4 translation(glm::vec3 translation_vector);
+glm::mat4 inverse_translation(glm::vec3 translation_vector_inv);
 glm::mat4 scale(glm::vec3 skalierung_vector);
 glm::mat4 rotation(float winkel, glm::vec3 rotation_vector);
 

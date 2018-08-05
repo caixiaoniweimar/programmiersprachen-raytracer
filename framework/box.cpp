@@ -251,11 +251,12 @@ glm::vec3 Box::get_normal(int plane) const{
 intersectionResult Box::istIntersect(Ray const& ray,float& t) const{
     	intersectionResult result{};
 		glm::vec3 normal{0,0,0};
-    	if(intersect_neue(ray,t,normal)==true)
+		Ray new_ray = transformRay( world_transformation_ ,ray );
+    	if(intersect_neue(new_ray,t,normal)==true)
     		{	
     			result.hit=true;
     			result.distance = t;
-    			result.position=ray.getpoint(result.distance);
+    			result.position=new_ray.getpoint(result.distance);
     			result.normal = normal;
 				result.closest_shape=this;
     		}

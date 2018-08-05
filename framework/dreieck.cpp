@@ -71,11 +71,12 @@ glm::vec3 Dreieck::getNormal() const{
 }*/
 intersectionResult Dreieck::istIntersect(Ray const& ray,float& t) const{
    intersectionResult result{};
-    	if(intersect(ray,t)==true)
+   Ray new_ray = transformRay( world_transformation_ ,ray );
+    	if(intersect(new_ray,t)==true)
     		{	
     			result.hit=true;
     			result.distance = t;
-    			result.position=ray.getpoint(result.distance);
+    			result.position=new_ray.getpoint(result.distance);
     			result.normal = getNormal();
 				result.closest_shape=this;   
     		}

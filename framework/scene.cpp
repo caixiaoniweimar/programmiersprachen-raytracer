@@ -188,8 +188,11 @@ Scene open_sdf_datei(string const& filename){
       if(differ_string=="transform"){
         cout<<"transform ";
         string objekt_name;
-        istrm>>objekt_name;
+        istrm >> differ_string;
+        objekt_name=differ_string;
         cout<<objekt_name<<" ";
+        shared_ptr<Shape> shape = shape_vector_find(  objekt_name, scene.container_objekt );
+
         istrm>>differ_string;
         if(differ_string=="translate"){
           cout<<"translate ";
@@ -198,8 +201,22 @@ Scene open_sdf_datei(string const& filename){
           istrm>> translation_vector.y;
           istrm>> translation_vector.z;
           glm::mat4 translation_mat = translation(translation_vector);
-          // Am Ende =translation_mat * vec4;
-          cout<<" "<<translation_vector.x<<" "<<translation_vector.y<<" "<<translation_vector.z<<endl;
+          //glm::mat4 translation_mat_inv = inverse_translation(translation_vector);
+          //glm::mat4 translation_mat_inv1 = glm::inverse(translation_mat); //translation_mat_inv = translation_mat_inv1
+          glm::mat4 tmp_matrix = shape->get_transformation();
+          cout<<translation_vector.x<<" "<<translation_vector.y<<" "<<translation_vector.z<<endl;
+          cout<<"vor:"<<endl;
+          cout<<tmp_matrix[0][0]<<" "<<tmp_matrix[0][1]<<" "<<tmp_matrix[0][2]<<" "<<tmp_matrix[0][3]<<endl;
+          cout<<tmp_matrix[1][0]<<" "<<tmp_matrix[1][1]<<" "<<tmp_matrix[1][2]<<" "<<tmp_matrix[1][3]<<endl;
+          cout<<tmp_matrix[2][0]<<" "<<tmp_matrix[2][1]<<" "<<tmp_matrix[2][2]<<" "<<tmp_matrix[2][3]<<endl;
+          cout<<tmp_matrix[3][0]<<" "<<tmp_matrix[3][1]<<" "<<tmp_matrix[3][2]<<" "<<tmp_matrix[3][3]<<endl;
+          tmp_matrix=tmp_matrix*translation_mat;
+          shape->set_transformation(tmp_matrix);
+          cout<<"nach:"<<endl;
+          cout<<tmp_matrix[0][0]<<" "<<tmp_matrix[0][1]<<" "<<tmp_matrix[0][2]<<" "<<tmp_matrix[0][3]<<endl;
+          cout<<tmp_matrix[1][0]<<" "<<tmp_matrix[1][1]<<" "<<tmp_matrix[1][2]<<" "<<tmp_matrix[1][3]<<endl;
+          cout<<tmp_matrix[2][0]<<" "<<tmp_matrix[2][1]<<" "<<tmp_matrix[2][2]<<" "<<tmp_matrix[2][3]<<endl;
+          cout<<tmp_matrix[3][0]<<" "<<tmp_matrix[3][1]<<" "<<tmp_matrix[3][2]<<" "<<tmp_matrix[3][3]<<endl;
         }
         if(differ_string=="scale"){
           cout<<"scale ";
@@ -208,8 +225,22 @@ Scene open_sdf_datei(string const& filename){
           istrm>> skalierung_vector.y;
           istrm>> skalierung_vector.z;
           glm::mat4 skalierung_mat = scale(skalierung_vector);
-
+          
+          glm::mat4 tmp_matrix = shape->get_transformation();
           cout<<skalierung_vector.x<<" "<<skalierung_vector.y<<" "<<skalierung_vector.z<<endl;
+          cout<<"vor:"<<endl;
+          cout<<tmp_matrix[0][0]<<" "<<tmp_matrix[0][1]<<" "<<tmp_matrix[0][2]<<" "<<tmp_matrix[0][3]<<endl;
+          cout<<tmp_matrix[1][0]<<" "<<tmp_matrix[1][1]<<" "<<tmp_matrix[1][2]<<" "<<tmp_matrix[1][3]<<endl;
+          cout<<tmp_matrix[2][0]<<" "<<tmp_matrix[2][1]<<" "<<tmp_matrix[2][2]<<" "<<tmp_matrix[2][3]<<endl;
+          cout<<tmp_matrix[3][0]<<" "<<tmp_matrix[3][1]<<" "<<tmp_matrix[3][2]<<" "<<tmp_matrix[3][3]<<endl;
+          tmp_matrix=tmp_matrix*skalierung_mat;
+          shape->set_transformation(tmp_matrix);
+          cout<<"nach:"<<endl;
+          cout<<tmp_matrix[0][0]<<" "<<tmp_matrix[0][1]<<" "<<tmp_matrix[0][2]<<" "<<tmp_matrix[0][3]<<endl;
+          cout<<tmp_matrix[1][0]<<" "<<tmp_matrix[1][1]<<" "<<tmp_matrix[1][2]<<" "<<tmp_matrix[1][3]<<endl;
+          cout<<tmp_matrix[2][0]<<" "<<tmp_matrix[2][1]<<" "<<tmp_matrix[2][2]<<" "<<tmp_matrix[2][3]<<endl;
+          cout<<tmp_matrix[3][0]<<" "<<tmp_matrix[3][1]<<" "<<tmp_matrix[3][2]<<" "<<tmp_matrix[3][3]<<endl;
+
         }
         if(differ_string =="rotate"){
           cout<<"rotate ";
@@ -220,10 +251,25 @@ Scene open_sdf_datei(string const& filename){
           istrm>>rotation_vector.y;
           istrm>>rotation_vector.z;
           glm::mat4 rotation_mat = rotation(winkel,rotation_vector);// Am Ende =rotation_mat * vec4;
-          
           cout<<winkel<<" "<<rotation_vector.x<<" "<<rotation_vector.y<<" "<<rotation_vector.z<<endl;
+
+          glm::mat4 tmp_matrix = shape->get_transformation();
+          cout<<"vor:"<<endl;
+          cout<<tmp_matrix[0][0]<<" "<<tmp_matrix[0][1]<<" "<<tmp_matrix[0][2]<<" "<<tmp_matrix[0][3]<<endl;
+          cout<<tmp_matrix[1][0]<<" "<<tmp_matrix[1][1]<<" "<<tmp_matrix[1][2]<<" "<<tmp_matrix[1][3]<<endl;
+          cout<<tmp_matrix[2][0]<<" "<<tmp_matrix[2][1]<<" "<<tmp_matrix[2][2]<<" "<<tmp_matrix[2][3]<<endl;
+          cout<<tmp_matrix[3][0]<<" "<<tmp_matrix[3][1]<<" "<<tmp_matrix[3][2]<<" "<<tmp_matrix[3][3]<<endl;
+          tmp_matrix=tmp_matrix*rotation_mat;
+          shape->set_transformation(tmp_matrix);
+          cout<<"nach:"<<endl;
+          cout<<tmp_matrix[0][0]<<" "<<tmp_matrix[0][1]<<" "<<tmp_matrix[0][2]<<" "<<tmp_matrix[0][3]<<endl;
+          cout<<tmp_matrix[1][0]<<" "<<tmp_matrix[1][1]<<" "<<tmp_matrix[1][2]<<" "<<tmp_matrix[1][3]<<endl;
+          cout<<tmp_matrix[2][0]<<" "<<tmp_matrix[2][1]<<" "<<tmp_matrix[2][2]<<" "<<tmp_matrix[2][3]<<endl;
+          cout<<tmp_matrix[3][0]<<" "<<tmp_matrix[3][1]<<" "<<tmp_matrix[3][2]<<" "<<tmp_matrix[3][3]<<endl;
         }
-        
+// Matrix A*B nicht gleich B*A 
+// Transformation Reihenfolgen: Vorsichtig. wichtig. unterschiedlich.
+
       }
       if(differ_string=="render"){
         istrm>>scene.width;
@@ -237,13 +283,21 @@ inf.close();
 return scene;
 }
 
-// Aufgabe 7.5
+// Aufgabe 7.5 mat4 zu berechnen, soll richtig sein
 glm::mat4 translation(glm::vec3 translation_vector){
   glm::mat4 result(0.0f);
   result[0] = glm::vec4 {1.0f,0.0f,0.0f,0.0f};
   result[1] = glm::vec4 {0.0f,1.0f,0.0f,0.0f};
   result[2] = glm::vec4 {0.0f,0.0f,1.0f,0.0f};
   result[3] = glm::vec4 {translation_vector,1.0f};
+  return result;
+}
+glm::mat4 inverse_translation(glm::vec3 translation_vector){
+  glm::mat4 result(0.0f);
+  result[0] = glm::vec4 {1.0f,0.0f,0.0f,0.0f};
+  result[1] = glm::vec4 {0.0f,1.0f,0.0f,0.0f};
+  result[2] = glm::vec4 {0.0f,0.0f,1.0f,0.0f};
+  result[3] = glm::vec4 {translation_vector*(-1.0f),1.0f};
   return result;
 }
 

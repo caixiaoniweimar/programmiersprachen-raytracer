@@ -74,11 +74,12 @@ using namespace std;
     // 之后考虑新Ray, transformRay
    intersectionResult Sphere::istIntersect(Ray const& ray,float& t) const{
     	intersectionResult result{};
-    	if(intersect(ray,t)==true)
+		Ray new_ray = transformRay( world_transformation_ ,ray );
+    	if(intersect(new_ray,t)==true)
     		{	
     			result.hit=true;
     			result.distance = t;
-    			result.position=ray.getpoint(result.distance);
+    			result.position=new_ray.getpoint(result.distance);
     			result.normal = glm::normalize(result.position - mittelpunkt_);
 				result.closest_shape=this;   
     		}
@@ -104,4 +105,3 @@ using namespace std;
 
 
 
-	
