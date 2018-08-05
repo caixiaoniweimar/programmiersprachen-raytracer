@@ -54,6 +54,7 @@ protected:
 // Aufgabe 7.5
 		glm::mat4 world_transformation_;
 		glm::mat4 world_transformation_inv_;
+		
 };
 // Aufgabe 5.4
 ostream& operator<<(ostream& os,Shape const& s);
