@@ -31,11 +31,13 @@ struct Scene{
 	vector<shared_ptr<Shape>> container_objekt;
     // speichert Objekt im Composite
     shared_ptr<Composite> root;
-
 	vector<Light> container_light;
 	Camera camera{};
-
 	Color ambiente{0.0f,0.0f,0.0f}; 
+
+	unsigned width;
+	unsigned height;
+	string filename;
 };
 // Aufgabe 6.5
 Scene open_sdf_datei(string const& filename);
