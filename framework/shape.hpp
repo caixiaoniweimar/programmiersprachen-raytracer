@@ -36,11 +36,24 @@ public:
 		void set_name(string const& name);
 		string get_name() const;
 
+		void set_material(shared_ptr<Material> const& material);
+		shared_ptr<Material> get_material() const;
+
+		void set_transformation(glm::mat4 world_transfor);
+		glm::mat4 get_transformation() const;
+		void set_transformation_inv(glm::mat4 world_transfor_inv);
+		glm::mat4 get_transformation_inv() const;
+
+
 // Aufgabe 5.3
 // abgleiteted Klasse wird diese Attribute aufrufen( vererben diese Attribute als private )
+protected:
 		string name_;
 // Aufgabe 6.4
 		shared_ptr<Material> material_;
+// Aufgabe 7.5
+		glm::mat4 world_transformation_;
+		glm::mat4 world_transformation_inv_;
 };
 // Aufgabe 5.4
 ostream& operator<<(ostream& os,Shape const& s);

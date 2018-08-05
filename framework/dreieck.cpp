@@ -84,3 +84,13 @@ intersectionResult Dreieck::istIntersect(Ray const& ray,float& t) const{
 glm::vec3 Dreieck::getNormal(intersectionResult const& schnittpunkt) const{
     return schnittpunkt.normal;
 }
+
+glm::vec3 Dreieck::get_punkt1() const{
+    return punkt1_;
+}
+glm::vec3 Dreieck::get_punkt2() const{
+    return punkt2_;
+}
+glm::vec3 Dreieck::get_punkt3() const{
+    return punkt3_;
+}

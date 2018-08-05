@@ -20,7 +20,6 @@ public:
 	bool intersect(Ray const& ray, float& t) const override;
 	glm::vec3 getNormal(intersectionResult const& schnittpunkt) const override;
 
-public:
 	vector<shared_ptr<Shape>> composite_;
 
 };

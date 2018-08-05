@@ -22,6 +22,11 @@ public:
 	glm::vec3 getNormal(intersectionResult const& schnittpunkt) const override;
     bool intersect_auto(Ray const& ray, float& t, glm::vec3& schnittpunkt) const;
 
+    glm::vec3 get_punkt1() const;
+    glm::vec3 get_punkt2() const;
+    glm::vec3 get_punkt3() const;
+
+private:
     glm::vec3 punkt1_;
     glm::vec3 punkt2_;
     glm::vec3 punkt3_;

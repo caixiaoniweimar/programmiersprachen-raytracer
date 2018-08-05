@@ -105,7 +105,7 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth) const{
   Color amb{0,0,0};
   if( schnittpunkt.hit ==true ){
     // rechnen I_a*K_a, rechnen nur ont Time;  I_a->ambiente(color),  k_a von Material Attribute ka
-        amb = (scene.ambiente)*(schnittpunkt.closest_shape->material_->ka);
+        amb = (scene.ambiente)*(schnittpunkt.closest_shape->get_material()->ka);
         // wenn es viele Light in scene gibt;
         for( int i=0; i< scene.container_light.size(); ++i ){
           Ray light_ray{ schnittpunkt.position, scene.container_light[i].position_ - schnittpunkt.position };
@@ -141,16 +141,16 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth) const{
               float RVdot = glm::dot(R,V);
 
               // zuerste plus I_ip*k_d*dot(N,L)
-              result_Color += ( scene.container_light[i].rechnen_intensitaet() )*( schnittpunkt.closest_shape->material_->kd ) * max( LNdot,0.0f );
+              result_Color += ( scene.container_light[i].rechnen_intensitaet() )*( schnittpunkt.closest_shape->get_material()->kd ) * max( LNdot,0.0f );
               // dann plus I_ip*k_s*dot(R,V)^m
-              result_Color += ( scene.container_light[i].rechnen_intensitaet() )* (schnittpunkt.closest_shape->material_->ks)*
-                              pow( max(RVdot,0.0f), (schnittpunkt.closest_shape->material_)->exponente_m );
+              result_Color += ( scene.container_light[i].rechnen_intensitaet() )* (schnittpunkt.closest_shape->get_material()->ks)*
+                              pow( max(RVdot,0.0f), (schnittpunkt.closest_shape->get_material())->exponente_m );
             // aus Adrian Folien Page 18!!!sehr wichtig!!! und verstanden!!
           }
         }
 
 // reflektion von andere Objekte!!!!!!!!!
-    Color ks_wert = schnittpunkt.closest_shape->material_->ks;
+    Color ks_wert = schnittpunkt.closest_shape->get_material()->ks;
     if( depth>0 ){
       glm::vec3 V = ray.direction; //
       glm::vec3 V1 = glm::normalize(schnittpunkt.position-scene.camera.eye_); // V=V1
@@ -162,13 +162,13 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth) const{
       reflektion_Ray.origin += reflektion_Ray.direction*(float)0.001;
       Color reflektion_Color = raytrace(reflektion_Ray, depth-1);
 
-    bool ob_refraction = schnittpunkt.closest_shape->material_->refraction;
+    bool ob_refraction = schnittpunkt.closest_shape->get_material()->refraction;
     // refraction opacity zwischen 0~1 0->Undurchsichtigkeit 1->glass
     // erzeugen ein Objekt ueberpruefen, ob Methode richtig ist.
     Color refraktion_Color{0,0,0};
     if( ob_refraction && depth>0){
       float q;
-      float refrac_index = schnittpunkt.closest_shape->material_->refraction_index;
+      float refrac_index = schnittpunkt.closest_shape->get_material()->refraction_index;
       float VNdot1 = glm::dot(N,V);
       if(VNdot1 <0){
         VNdot1 = -VNdot1;

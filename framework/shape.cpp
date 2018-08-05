@@ -28,6 +28,26 @@ string Shape::get_name() const{
 	return name_;
 }
 
+void Shape::set_material(shared_ptr<Material> const& material){
+	material_=material;
+}
+shared_ptr<Material> Shape::get_material() const{
+	return material_;
+}
+
+void Shape::set_transformation(glm::mat4 world_transfor){
+	world_transformation_=world_transfor;
+}
+glm::mat4 Shape::get_transformation() const{
+	return world_transformation_;
+}
+void Shape::set_transformation_inv(glm::mat4 world_transfor_inv){
+	world_transformation_inv_ = world_transfor_inv;
+}
+glm::mat4 Shape::get_transformation_inv() const{
+	return world_transformation_inv_;
+}
+
 // Aufgabe 5.4
 ostream& Shape::print(ostream& os) const{  //重要！！！material_ -> name  区别于material.hpp中的<<重载 这里是 
 	// shape对象的material属性 再到material的类中 读material的ka,name等属性 所以需要"->"

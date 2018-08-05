@@ -26,7 +26,7 @@ public:
 		Color intensitaet {color_*brightness_} ;
 		return intensitaet;
 	}
-public:
+
 	string name_;
 	glm::vec3 position_;
 	Color color_;

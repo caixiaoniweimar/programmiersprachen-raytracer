@@ -34,7 +34,7 @@ public:
 	intersectionResult istIntersect(Ray const& ray,float& t) const override;
 	glm::vec3 getNormal(intersectionResult const& schnittpunkt) const override;
 
-
+private:
 	glm::vec3 minimum_;
 	glm::vec3 maximum_;
 };
