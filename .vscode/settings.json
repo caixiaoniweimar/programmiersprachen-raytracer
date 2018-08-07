@@ -34,7 +34,9 @@
         "fstream": "cpp",
         "locale": "cpp",
         "thread": "cpp",
-        "__bit_reference": "cpp"
+        "__bit_reference": "cpp",
+        "istream": "cpp",
+        "ios": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled",
     "cmake.configureOnOpen": false

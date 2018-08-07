@@ -257,7 +257,7 @@ intersectionResult Box::istIntersect(Ray const& ray,float& t) const{
     			result.hit=true;
     			result.distance = t;
     			result.position=new_ray.getpoint(result.distance);
-    			result.normal = normal;
+    			result.normal = normal; 
 				result.closest_shape=this;
     		}
     	return result;

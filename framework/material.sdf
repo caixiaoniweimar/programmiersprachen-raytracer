@@ -17,10 +17,8 @@ define shape box ground -20 -1 -30 10 0 0 light_gray
 # composite
 define shape composite root green_box ground asphere bsphere csphere dreieck1 
 # scene xform
-#transform ground rotate 45 0 0 1
-#transform ground translate 0 0 -10
-#transform bsphere rotate 45 0 1 0
-#transform bsphere translate 0 0 -10
+transform csphere translate 0 0 3
+#transform csphere rotate -45 0 0 1
 # lights
 define light sun  -50 200 100  0.2 0.2 0.2 4
 ambient 0.2 0.2 0.2 

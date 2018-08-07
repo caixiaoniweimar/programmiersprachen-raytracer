@@ -20,7 +20,6 @@
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <glm/gtx/multiple.hpp>
-
 #include <array>
 #include <string>
 
@@ -71,7 +70,6 @@ public:
   float get_time() const;
 
   void show(std::vector<Color> const& color_buffer);
-
 private:
   GLFWwindow*       window_;
   glm::ivec2        window_size_;

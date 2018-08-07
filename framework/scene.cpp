@@ -162,6 +162,7 @@ Scene open_sdf_datei(string const& filename){
             }
       if(differ_string=="camera"){  //camera kein Problem
                 istrm>> (scene.camera).name_;
+                //getline(inf,sline);
                 istrm>> (scene.camera).fov_x_;
                 istrm>> (scene.camera).eye_.x;
                 istrm>> (scene.camera).eye_.y;
