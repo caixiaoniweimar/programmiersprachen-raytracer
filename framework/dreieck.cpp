@@ -78,7 +78,6 @@ intersectionResult Dreieck::istIntersect(Ray const& ray,float& t) const{
     			result.distance = t;
     			result.position=new_ray.getpoint(result.distance);
     			result.normal = getNormal();
-                result.normal = glm::normalize(glm::vec3(glm::transpose(get_transformation_inv())*glm::vec4(result.normal,0.0f)));
 				result.closest_shape=this;   
     		}
     	return result;

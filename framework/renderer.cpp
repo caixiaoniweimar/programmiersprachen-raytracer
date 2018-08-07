@@ -143,7 +143,7 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth) const{
           // I_ip jede Licht!!! rechnen_intensitaet: brightness*light_color
           // ueberprufen ob andere objekt zwischen Lichtquelle und schnittpunkt liegt, wenn Objekt liegt, dann gibt es
           // Schatten,Farbe nur I_a*k_a
-          if( ob_andere_objekt.hit==false || ob_andere_objekt.distance > lightray_distance ) {
+          if( ob_andere_objekt.hit==false && ob_andere_objekt.distance > lightray_distance ) {
 
               glm::vec3 R = glm::normalize(2 * LNdot * N-L);
               glm::vec3 V = -ray.direction;
