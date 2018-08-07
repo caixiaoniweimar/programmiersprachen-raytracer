@@ -65,6 +65,7 @@ glm::vec3 Dreieck::getNormal() const{
 //andere Art Dreieck,benutzt glm
 /*bool Dreieck::intersect_auto(Ray const& ray, float& t, glm::vec3& schnittpunkt) const{
     bool result=false;
+    ray.direction=glm::normalize(ray.direction);
     result = glm::intersectRayTriangle(ray.origin, ray.direction,
         punkt1_,punkt2_,punkt3_,schnittpunkt);
     return result;
